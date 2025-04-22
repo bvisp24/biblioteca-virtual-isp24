@@ -4,10 +4,11 @@ let rawData = [];
 document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
     .then(res => res.json())
-    .then(data => {
-      rawData = data;
-      initializeFilters();
-    })
+  .then(data => {
+  rawData = data;
+  initializeFilters();
+  mostrarUltimosArchivos(); // 👈 mostramos los últimos 10
+})
     .catch(err => {
       console.error("Error al cargar datos:", err);
     });
@@ -191,4 +192,28 @@ function handleNombreSearch() {
     const container = document.getElementById("resultados");
     container.innerHTML = "<p>Su archivo no fue encontrado. Búsquelo de forma manual. Gracias.</p>";
   }
+}
+function mostrarUltimosArchivos() {
+  const container = document.getElementById("ultimos-resultados");
+  container.innerHTML = "";
+
+  const ultimos = rawData.slice(-10).reverse(); // toma los últimos 10 y los invierte
+
+  ultimos.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const h3 = document.createElement("h3");
+    h3.textContent = item["Nombre del Archivo"];
+
+    const link = document.createElement("a");
+    link.href = item["URL"];
+    link.target = "_blank";
+    link.className = "btn";
+    link.textContent = "Ver archivo PDF";
+
+    card.appendChild(h3);
+    card.appendChild(link);
+    container.appendChild(card);
+  });
 }
