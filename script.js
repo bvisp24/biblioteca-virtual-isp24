@@ -1,16 +1,16 @@
-const DATA_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/5";
+const DATA_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/7";
 let rawData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
-    .then(res => res.json())
-    .then(data => {
-      rawData = data;
-      initializeFilters();
-    })
-    .catch(err => {
-      console.error("Error al cargar datos:", err);
-    });
+  .then(res => res.json())
+  .then(data => {
+    rawData = data;
+    initializeFilters();
+  })
+  .catch(err => {
+    console.error("Error al cargar datos:", err);
+  });
 
   document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
   document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
