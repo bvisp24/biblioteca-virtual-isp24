@@ -177,16 +177,14 @@ header {
   text-align: center;
 }
 
-.spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #ccc;
-  border-top: 6px solid #4285f4;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.logo-spinner {
+  width: 100px;
+  height: 100px;
+  animation: girarLogo 2s linear infinite;
   margin-bottom: 20px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes girarLogo {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
