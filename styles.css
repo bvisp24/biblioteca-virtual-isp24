@@ -1,20 +1,115 @@
-body {
-  margin: 0;
-  font-family: 'Georgia', serif;
-  background-image: url('https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  color: #2d2d2d;
+:root {
+  --primary: #1976d2;
+  --bg: #f4f6f8;
+  --white: #fff;
+  --text: #2c3e50;
+  --shadow: rgba(0, 0, 0, 0.1);
 }
 
-.contenedor {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  max-width: 1000px;
-  margin: auto;
-  border-radius: 8px;
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  color: var(--text);
+  background: url('https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg') no-repeat center center fixed;
+  background-size: cover;
+  backdrop-filter: brightness(0.95);
 }
 
 header {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
   text-align: center;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 40px auto;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.filters {
+  flex: 1;
+  min-width: 250px;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.filters label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.filters select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+}
+
+.results {
+  flex: 3;
+  background: var(--white);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #e3f2fd;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: var(--primary);
+}
+
+.card .btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--primary);
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.footer {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+.donar {
+  background: #e8f5e9;
+  padding: 15px;
+  border-left: 5px solid #43a047;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
