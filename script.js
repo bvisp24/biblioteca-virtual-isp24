@@ -1,4 +1,4 @@
-const DATA_URL = "https://script.google.com/macros/s/AKfycbzVP2LlS79V7Dqmk33qG14LdPiuTPJO_4MPolLd6_VwRqca0tVffTZKmAoceMGxkb1a/exec";
+const DATA_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/8";
 let rawData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
