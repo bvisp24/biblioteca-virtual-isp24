@@ -20,9 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeFilters() {
+  const container = document.getElementById("filtro-carrera").parentElement;
+  const label = document.createElement("label");
+  label.textContent = "Filtro: Seleccione su carrera para continuar";
+  label.style.display = "block";
+  label.style.fontWeight = "bold";
+  label.style.textAlign = "center";
+  label.style.marginBottom = "10px";
+  container.insertBefore(label, document.getElementById("filtro-carrera"));
+
   const carreras = [...new Set(rawData.map(item => item["Carrera"]).filter(Boolean))].sort();
   populateSelect("filtro-carrera", carreras);
-  document.getElementById("filtro-carrera").parentElement.style.display = "block";
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.alignItems = "center";
 }
 
 function handleCarreraChange() {
