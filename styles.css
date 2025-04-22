@@ -55,12 +55,23 @@ header {
   background: #f9f9f9;
 }
 
-.results {
+.results,
+#ultimos-archivos {
   flex: 3;
   background: var(--bg-overlay);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 12px var(--shadow);
+  max-width: 100%;
+  margin: 20px auto;
+}
+
+.results h2,
+#ultimos-archivos h2 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 1.4rem;
+  margin-bottom: 15px;
 }
 
 .cards {
@@ -112,6 +123,7 @@ header {
     flex-direction: column;
   }
 }
+
 .buscador {
   margin-top: 20px;
 }
