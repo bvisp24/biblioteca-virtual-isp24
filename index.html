@@ -15,17 +15,26 @@
   <div class="container">
     <aside class="filters">
       <h2>Filtrar</h2>
+
       <label for="carrera">Carrera:</label>
-      <select id="carrera" onchange="updateFilters('carrera')"></select>
+      <select id="carrera" onchange="handleCarrera()">
+        <option value="">Seleccionar uno</option>
+      </select>
 
       <label for="ciclolectivo">Ciclo lectivo:</label>
-      <select id="ciclolectivo" onchange="updateFilters('ciclolectivo')"></select>
+      <select id="ciclolectivo" onchange="handleCicloLectivo()" disabled>
+        <option value="">Seleccionar uno</option>
+      </select>
 
       <label for="añocarrera">Año de carrera:</label>
-      <select id="añocarrera" onchange="updateFilters('añocarrera')"></select>
+      <select id="añocarrera" onchange="handleAnioCarrera()" disabled>
+        <option value="">Seleccionar uno</option>
+      </select>
 
       <label for="materia">Materia:</label>
-      <select id="materia" onchange="filterData()"></select>
+      <select id="materia" onchange="filterData()" disabled>
+        <option value="">Seleccionar uno</option>
+      </select>
     </aside>
 
     <section class="results">
@@ -36,97 +45,16 @@
 
   <footer class="footer">
     <h3>Términos de uso</h3>
-    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales. El uso responsable de los materiales es fundamental para mantener este recurso disponible para toda la comunidad educativa.</p>
+    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales.</p>
     <div class="donar">
       <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> ¿Quieren compartir sus archivos? Pueden enviarlos al número del administrador de la biblioteca virtual: <strong>1123456789</strong></p>
-      <p><strong>Alumnos:</strong> ¿Problemas con los archivos? Enviá tus consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
+      <p><strong>Profesores:</strong> Enviá tus archivos al número del administrador: <strong>1123456789</strong></p>
+      <p><strong>Alumnos:</strong> Consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
       <hr />
-      <p>También podés ayudarnos con una donación voluntaria para mantener este servicio.</p>
       <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
     </div>
   </footer>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
-    let allData = [];
-
-    window.onload = () => {
-      fetch(scriptURL)
-        .then(res => res.json())
-        .then(data => {
-          allData = data;
-          populateFilters();
-          filterData();
-        });
-    };
-
-    function populateFilters() {
-      const carreraSet = new Set();
-      const cicloSet = new Set();
-      const anioSet = new Set();
-      const materiaSet = new Set();
-
-      allData.forEach(item => {
-        carreraSet.add(item.Carrera);
-        cicloSet.add(item["Ciclo lectivo"]);
-        anioSet.add(item["Año de carrera"]);
-        materiaSet.add(item.Materia);
-      });
-
-      fillSelect("carrera", [...carreraSet]);
-      fillSelect("ciclolectivo", [...cicloSet]);
-      fillSelect("añocarrera", [...anioSet]);
-      fillSelect("materia", [...materiaSet]);
-    }
-
-    function fillSelect(id, values) {
-      const select = document.getElementById(id);
-      select.innerHTML = '<option value="">Todos</option>' + values.sort().map(v => `<option value="${v}">${v}</option>`).join('');
-    }
-
-    function updateFilters(changedFilter) {
-      const carrera = document.getElementById("carrera").value;
-      const ciclo = document.getElementById("ciclolectivo").value;
-      const anio = document.getElementById("añocarrera").value;
-
-      const materiasFiltradas = allData.filter(item =>
-        (!carrera || item.Carrera === carrera) &&
-        (!ciclo || item["Ciclo lectivo"] === ciclo) &&
-        (!anio || item["Año de carrera"] === anio)
-      );
-
-      const materiaSet = new Set();
-      materiasFiltradas.forEach(item => materiaSet.add(item.Materia));
-      fillSelect("materia", [...materiaSet]);
-
-      filterData();
-    }
-
-    function filterData() {
-      const carrera = document.getElementById("carrera").value;
-      const ciclo = document.getElementById("ciclolectivo").value;
-      const anio = document.getElementById("añocarrera").value;
-      const materia = document.getElementById("materia").value;
-
-      const filtered = allData.filter(item =>
-        (!carrera || item.Carrera === carrera) &&
-        (!ciclo || item["Ciclo lectivo"] === ciclo) &&
-        (!anio || item["Año de carrera"] === anio) &&
-        (!materia || item.Materia === materia)
-      );
-
-      const fileList = document.getElementById("fileList");
-      fileList.innerHTML = filtered.map(item => `
-        <div class="card">
-          <h3>${item.Materia}</h3>
-          <p><strong>Carrera:</strong> ${item.Carrera}</p>
-          <p><strong>Ciclo:</strong> ${item["Ciclo lectivo"]}</p>
-          <p><strong>Año:</strong> ${item["Año de carrera"]}</p>
-          <a href="${item.URL}" target="_blank">Ver archivo</a>
-        </div>
-      `).join("");
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
