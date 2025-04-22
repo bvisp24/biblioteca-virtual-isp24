@@ -1,75 +1,85 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxU6UCDMccEoTeAqi5ESJkA1SoBr1-ExXXXXX/exec"; // reemplaza por tu URL
+const scriptURL = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
 
-let data = [];
+let fullData = [];
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const res = await fetch(SCRIPT_URL);
-  data = await res.json();
-  populateFilters();
-  filterData();
-});
+async function fetchData() {
+  try {
+    const res = await fetch(scriptURL);
+    fullData = await res.json();
+    loadFilters();
+    filterData();
+  } catch (e) {
+    console.error("Error al obtener datos:", e);
+  }
+}
 
-function populateFilters() {
-  const carreraSet = new Set();
-  const cicloSet = new Set();
-  const añoSet = new Set();
-  const materiaSet = new Set();
+function loadFilters() {
+  const carrera = new Set();
+  const ciclolectivo = new Set();
+  const añocarrera = new Set();
+  const materia = new Set();
 
-  data.forEach(item => {
-    carreraSet.add(item.Carrera);
-    cicloSet.add(item['Ciclo lectivo']);
-    añoSet.add(item['Año de carrera']);
-    materiaSet.add(item.Materia);
+  fullData.forEach(item => {
+    carrera.add(item.Carrera);
+    ciclolectivo.add(item["Ciclo Lectivo"]);
+    añocarrera.add(item["Año Carrera"]);
+    materia.add(item.Materia);
   });
 
-  populateSelect('carrera', carreraSet);
-  populateSelect('ciclolectivo', cicloSet);
-  populateSelect('añocarrera', añoSet);
-  populateSelect('materia', materiaSet);
+  populateSelect("carrera", [...carrera]);
+  populateSelect("ciclolectivo", [...ciclolectivo]);
+  populateSelect("añocarrera", [...añocarrera]);
+  populateSelect("materia", [...materia]);
 }
 
 function populateSelect(id, values) {
   const select = document.getElementById(id);
-  select.innerHTML = '<option value="">-- Todas --</option>';
-  [...values].sort().forEach(val => {
-    const opt = document.createElement('option');
-    opt.value = val;
-    opt.textContent = val;
-    select.appendChild(opt);
+  select.innerHTML = '<option value="">Todos</option>';
+  values.sort().forEach(val => {
+    const option = document.createElement("option");
+    option.value = val;
+    option.textContent = val;
+    select.appendChild(option);
   });
 }
 
 function filterData() {
-  const carrera = document.getElementById('carrera').value;
-  const ciclo = document.getElementById('ciclolectivo').value;
-  const año = document.getElementById('añocarrera').value;
-  const materia = document.getElementById('materia').value;
+  const c = document.getElementById("carrera").value;
+  const cl = document.getElementById("ciclolectivo").value;
+  const ac = document.getElementById("añocarrera").value;
+  const m = document.getElementById("materia").value;
 
-  const filtered = data.filter(item =>
-    (!carrera || item.Carrera === carrera) &&
-    (!ciclo || item['Ciclo lectivo'] === ciclo) &&
-    (!año || item['Año de carrera'] === año) &&
-    (!materia || item.Materia === materia)
+  const filtered = fullData.filter(item =>
+    (c === "" || item.Carrera === c) &&
+    (cl === "" || item["Ciclo Lectivo"] === cl) &&
+    (ac === "" || item["Año Carrera"] === ac) &&
+    (m === "" || item.Materia === m)
   );
 
-  const fileList = document.getElementById('fileList');
-  fileList.innerHTML = '';
+  showFiles(filtered);
+}
 
-  if (filtered.length === 0) {
-    fileList.innerHTML = '<p>No se encontraron resultados.</p>';
+function showFiles(data) {
+  const fileList = document.getElementById("fileList");
+  fileList.innerHTML = "";
+
+  if (data.length === 0) {
+    fileList.innerHTML = "<p>No se encontraron archivos.</p>";
     return;
   }
 
-  filtered.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'card';
+  data.forEach(file => {
+    const card = document.createElement("div");
+    card.className = "card";
+
     card.innerHTML = `
-      <h3>${item.Materia}</h3>
-      <p><strong>Carrera:</strong> ${item.Carrera}</p>
-      <p><strong>Ciclo lectivo:</strong> ${item['Ciclo lectivo']}</p>
-      <p><strong>Año:</strong> ${item['Año de carrera']}</p>
-      <a href="${item.Enlace}" target="_blank" class="btn">Ver archivo</a>
+      <h4>${file.Materia}</h4>
+      <p><strong>Archivo:</strong> <a href="${file.Enlace}" target="_blank">${file.Archivo}</a></p>
+      <p><strong>Año:</strong> ${file["Año Carrera"]} | <strong>Ciclo:</strong> ${file["Ciclo Lectivo"]}</p>
     `;
+
     fileList.appendChild(card);
   });
 }
+
+document.addEventListener("DOMContentLoaded", fetchData);
