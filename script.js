@@ -197,3 +197,22 @@ function handleNombreSearch() {
 
   mostrarResultados(resultados);
 }
+function handleNombreSearch() {
+  const input = document.getElementById("busqueda-nombre");
+  const searchTerm = input.value.trim().toLowerCase();
+  clearResults();
+
+  if (!searchTerm) return;
+
+  const resultados = rawData.filter(item =>
+    item["Nombre del Archivo"] &&
+    item["Nombre del Archivo"].toLowerCase().includes(searchTerm)
+  );
+
+  if (resultados.length > 0) {
+    mostrarResultados(resultados);
+  } else {
+    const container = document.getElementById("resultados");
+    container.innerHTML = "<p>Su archivo no fue encontrado. Búsquelo de forma manual. Gracias.</p>";
+  }
+}
