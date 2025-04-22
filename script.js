@@ -1,4 +1,4 @@
-const DATA_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/8";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbzVP2LlS79V7Dqmk33qG14LdPiuTPJO_4MPolLd6_VwRqca0tVffTZKmAoceMGxkb1a/exec";
 let rawData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       rawData = data;
       initializeFilters();
-      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 4 actualizados
+      mostrarUltimosArchivos(); // ✅ Mostrar los últimos archivos
+      document.getElementById("cargando").style.display = "none";
     })
     .catch(err => {
       console.error("Error al cargar datos:", err);
+      document.getElementById("cargando").innerHTML = "<p>Error al cargar los archivos.</p>";
     });
 
   document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
@@ -125,7 +127,7 @@ function populateSelect(id, opciones) {
 }
 
 function showElement(id) {
-  document.querySelector(label[for="${id}"]).style.display = "block";
+  document.querySelector(`label[for="${id}"]`).style.display = "block";
   document.getElementById(id).style.display = "block";
 }
 
@@ -133,7 +135,7 @@ function clearSelect(id) {
   const select = document.getElementById(id);
   select.innerHTML = "";
   select.style.display = "none";
-  const label = document.querySelector(label[for="${id}"]);
+  const label = document.querySelector(`label[for="${id}"]`);
   if (label) label.style.display = "none";
 }
 
@@ -194,16 +196,24 @@ function handleNombreSearch() {
   }
 }
 
-// ✅ Mostrar últimos 4 archivos según fecha actualizada (columna 'Fecha Actualización')
+// ✅ Mostrar últimos archivos subidos según fecha y URL
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
-  container.innerHTML = "";
+  container.innerHTML = ""; // Limpiar contenido
 
-  const dataConFecha = rawData.filter(item => item["Fecha Actualización"]);
+  const dataConFecha = rawData.filter(item => item["Fecha Actualización"] && item["URL"]);
   const ordenados = dataConFecha.sort((a, b) =>
     new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
   );
-  const ultimos = ordenados.slice(0, 4);
+  const ultimos = ordenados.slice(0, 6);
+
+  if (ultimos.length === 0) {
+    container.innerHTML = "<p>No hay archivos recientes disponibles.</p>";
+    return;
+  }
+
+  const cardsContainer = document.createElement("div");
+  cardsContainer.className = "cards";
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
@@ -220,6 +230,8 @@ function mostrarUltimosArchivos() {
 
     card.appendChild(h3);
     card.appendChild(link);
-    container.appendChild(card);
+    cardsContainer.appendChild(card);
   });
+
+  container.appendChild(cardsContainer);
 }
