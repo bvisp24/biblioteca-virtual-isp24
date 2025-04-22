@@ -282,7 +282,9 @@ header {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 800px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
@@ -294,7 +296,7 @@ header {
 
 .logo-header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
 .logo-header p {
