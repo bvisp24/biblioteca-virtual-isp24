@@ -1,76 +1,73 @@
 const DATA_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/4";
 
-let data = [];
+let datos = [];
 
-window.addEventListener("DOMContentLoaded", async () => {
+const selects = {
+  carrera: document.getElementById('carrera'),
+  ciclo: document.getElementById('ciclo'),
+  anio: document.getElementById('anio'),
+  materia: document.getElementById('materia'),
+};
+
+async function cargarDatos() {
   const res = await fetch(DATA_URL);
-  data = await res.json();
-  const carreras = getUniqueValues(data, 'Carrera');
-  fillSelect(document.getElementById('carrera'), carreras);
-});
-
-function getUniqueValues(data, key, filter = {}) {
-  return [...new Set(
-    data.filter(row => {
-      return Object.keys(filter).every(k => row[k] === filter[k]);
-    }).map(row => row[key])
-  )].filter(Boolean);
+  datos = await res.json();
+  llenarSelect(selects.carrera, obtenerUnicos('Carrera'));
 }
 
-function fillSelect(selectElement, values) {
-  selectElement.innerHTML = '<option value="">Seleccionar uno</option>';
-  values.forEach(value => {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = value;
-    selectElement.appendChild(option);
+function obtenerUnicos(col) {
+  const valores = datos.map(d => d[col]).filter(v => v);
+  return [...new Set(valores)];
+}
+
+function llenarSelect(select, opciones) {
+  select.innerHTML = '<option value="">Seleccionar uno</option>';
+  opciones.forEach(op => {
+    const opt = document.createElement('option');
+    opt.value = op;
+    opt.textContent = op;
+    select.appendChild(opt);
   });
-  selectElement.classList.remove('hidden');
 }
 
-document.getElementById('carrera').addEventListener('change', (e) => {
-  const carrera = e.target.value;
-  const ciclos = getUniqueValues(data, 'Ciclo Lectivo', { 'Carrera': carrera });
-  fillSelect(document.getElementById('ciclo'), ciclos);
-});
+function filtrarDatos() {
+  let resultados = [...datos];
+  if (selects.carrera.value) {
+    resultados = resultados.filter(d => d.Carrera === selects.carrera.value);
+    llenarSelect(selects.ciclo, obtenerUnicos('Ciclo Lectivo'));
+  }
+  if (selects.ciclo.value) {
+    resultados = resultados.filter(d => d['Ciclo Lectivo'] === selects.ciclo.value);
+    llenarSelect(selects.anio, obtenerUnicos('Año de Carrera'));
+  }
+  if (selects.anio.value) {
+    resultados = resultados.filter(d => d['Año de Carrera'] === selects.anio.value);
+    llenarSelect(selects.materia, obtenerUnicos('Materia'));
+  }
+  if (selects.materia.value) {
+    resultados = resultados.filter(d => d.Materia === selects.materia.value);
+  }
+  mostrarResultados(resultados);
+}
 
-document.getElementById('ciclo').addEventListener('change', (e) => {
-  const carrera = document.getElementById('carrera').value;
-  const ciclo = e.target.value;
-  const anios = getUniqueValues(data, 'Año de Carrera', { 'Carrera': carrera, 'Ciclo Lectivo': ciclo });
-  fillSelect(document.getElementById('anio'), anios);
-});
-
-document.getElementById('anio').addEventListener('change', (e) => {
-  const carrera = document.getElementById('carrera').value;
-  const ciclo = document.getElementById('ciclo').value;
-  const anio = e.target.value;
-  const materias = getUniqueValues(data, 'Materia', { 'Carrera': carrera, 'Ciclo Lectivo': ciclo, 'Año de Carrera': anio });
-  fillSelect(document.getElementById('materia'), materias);
-});
-
-document.getElementById('materia').addEventListener('change', (e) => {
-  const carrera = document.getElementById('carrera').value;
-  const ciclo = document.getElementById('ciclo').value;
-  const anio = document.getElementById('anio').value;
-  const materia = e.target.value;
-
-  const resultados = data.filter(row => 
-    row['Carrera'] === carrera &&
-    row['Ciclo Lectivo'] === ciclo &&
-    row['Año de Carrera'] === anio &&
-    row['Materia'] === materia
-  );
-
+function mostrarResultados(arr) {
   const contenedor = document.getElementById('resultados');
   contenedor.innerHTML = '';
-  resultados.forEach(row => {
+  arr.forEach(d => {
     const card = document.createElement('div');
-    card.className = 'result-card';
+    card.className = 'card';
     card.innerHTML = `
-      <img src="pdf-icon.png" alt="PDF" />
-      <a href="${row['URL']}" target="_blank">${row['Nombre de Archivo']}</a>
+      <a href="${d.URL}" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF" />
+        ${d['Nombre del Archivo']}
+      </a>
     `;
     contenedor.appendChild(card);
   });
+}
+
+Object.values(selects).forEach(select => {
+  select.addEventListener('change', filtrarDatos);
 });
+
+window.addEventListener('DOMContentLoaded', cargarDatos);
