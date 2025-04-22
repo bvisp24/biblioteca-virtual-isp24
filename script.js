@@ -1,80 +1,106 @@
-const endpoint = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/2";
+const API_URL = 'https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/2';
 
-let data = [];
+let allData = [];
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch(endpoint);
-  data = await res.json();
-
-  populateDropdown("carrera", [...new Set(data.map(item => item["Carrera"]))]);
-
-  document.getElementById("carrera").addEventListener("change", handleFilter);
-  document.getElementById("ciclolectivo").addEventListener("change", handleFilter);
-  document.getElementById("añocarrera").addEventListener("change", handleFilter);
-  document.getElementById("materia").addEventListener("change", handleFilter);
+document.addEventListener('DOMContentLoaded', () => {
+  fetch(API_URL)
+    .then(res => res.json())
+    .then(data => {
+      allData = data;
+      populateCarreraOptions();
+    });
 });
 
-function populateDropdown(id, options) {
+function populateCarreraOptions() {
+  const carreraSelect = document.getElementById('carrera');
+  const carreras = [...new Set(allData.map(row => row['Carrera']).filter(Boolean))];
+  carreras.sort().forEach(carrera => {
+    const option = document.createElement('option');
+    option.value = carrera;
+    option.textContent = carrera;
+    carreraSelect.appendChild(option);
+  });
+
+  carreraSelect.addEventListener('change', () => {
+    populateNextSelect('ciclolectivo', ['Carrera']);
+  });
+
+  document.getElementById('ciclolectivo').addEventListener('change', () => {
+    populateNextSelect('añocarrera', ['Carrera', 'Ciclo lectivo']);
+  });
+
+  document.getElementById('añocarrera').addEventListener('change', () => {
+    populateNextSelect('materia', ['Carrera', 'Ciclo lectivo', 'Año de carrera']);
+  });
+
+  document.getElementById('materia').addEventListener('change', renderResults);
+}
+
+function populateNextSelect(id, filters) {
   const select = document.getElementById(id);
   select.innerHTML = '<option value="">Seleccionar uno</option>';
-  options.filter(o => o).forEach(option => {
-    const opt = document.createElement("option");
-    opt.value = option;
-    opt.textContent = option;
-    select.appendChild(opt);
+  const selected = getSelectedValues(filters);
+  const values = allData
+    .filter(row => filters.every(f => row[f] === selected[f]))
+    .map(row => row[selectIdToColumn(id)])
+    .filter(Boolean);
+
+  const unique = [...new Set(values)].sort();
+  unique.forEach(val => {
+    const option = document.createElement('option');
+    option.value = val;
+    option.textContent = val;
+    select.appendChild(option);
   });
+
   select.disabled = false;
 }
 
-function handleFilter() {
-  const carrera = document.getElementById("carrera").value;
-  const ciclo = document.getElementById("ciclolectivo").value;
-  const año = document.getElementById("añocarrera").value;
-  const materia = document.getElementById("materia").value;
-
-  let filtered = data;
-
-  if (carrera) {
-    filtered = filtered.filter(item => item["Carrera"] === carrera);
-    populateDropdown("ciclolectivo", [...new Set(filtered.map(item => item["Ciclo Lectivo"]))]);
-  }
-
-  if (ciclo) {
-    filtered = filtered.filter(item => item["Ciclo Lectivo"] === ciclo);
-    populateDropdown("añocarrera", [...new Set(filtered.map(item => item["Año de Carrera"]))]);
-  }
-
-  if (año) {
-    filtered = filtered.filter(item => item["Año de Carrera"] === año);
-    populateDropdown("materia", [...new Set(filtered.map(item => item["Materia"]))]);
-  }
-
-  if (materia) {
-    filtered = filtered.filter(item => item["Materia"] === materia);
-  }
-
-  showResults(filtered);
+function selectIdToColumn(id) {
+  return {
+    carrera: 'Carrera',
+    ciclolectivo: 'Ciclo lectivo',
+    añocarrera: 'Año de carrera',
+    materia: 'Materia'
+  }[id];
 }
 
-function showResults(items) {
-  const container = document.getElementById("fileList");
-  container.innerHTML = "";
+function getSelectedValues(fields) {
+  const result = {};
+  fields.forEach(f => {
+    const id = Object.entries(selectIdToColumnMap()).find(([, v]) => v === f)[0];
+    result[f] = document.getElementById(id).value;
+  });
+  return result;
+}
 
-  if (items.length === 0) {
-    container.innerHTML = "<p>No se encontraron resultados.</p>";
+function selectIdToColumnMap() {
+  return {
+    carrera: 'Carrera',
+    ciclolectivo: 'Ciclo lectivo',
+    añocarrera: 'Año de carrera',
+    materia: 'Materia'
+  };
+}
+
+function renderResults() {
+  const selected = getSelectedValues(['Carrera', 'Ciclo lectivo', 'Año de carrera', 'Materia']);
+  const fileList = document.getElementById('fileList');
+  fileList.innerHTML = '';
+
+  const filtered = allData.filter(row =>
+    Object.entries(selected).every(([key, val]) => row[key] === val)
+  );
+
+  if (filtered.length === 0) {
+    fileList.innerHTML = '<p>No se encontraron resultados.</p>';
     return;
   }
 
-  items.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    const link = document.createElement("a");
-    link.href = item["URL"];
-    link.target = "_blank";
-    link.textContent = item["Nombre de Archivo"];
-
-    card.appendChild(link);
-    container.appendChild(card);
+  filtered.forEach(row => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<a href="${row.URL}" target="_blank">${row['Nombre de archivo']}</a>`;
+    fileList.appendChild(card);
   });
 }
