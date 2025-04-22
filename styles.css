@@ -117,15 +117,30 @@ header {
 }
 
 .buscador label {
-  font-weight: 100;
+  font-weight: 600;
   display: block;
   margin-bottom: 5px;
 }
 
-.buscador input {
-  width: 100%;
+.buscador-input {
+  display: flex;
+  gap: 10px;
+}
+
+.buscador-input input {
+  flex: 1;
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
   background: #f9f9f9;
+}
+
+.buscador-input button {
+  background: var(--primary);
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
 }
