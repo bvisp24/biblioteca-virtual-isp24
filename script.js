@@ -194,7 +194,7 @@ function handleNombreSearch() {
   }
 }
 
-// ✅ Mostrar últimos 4 archivos según fecha actualizada (columna 'Fecha Actualización')
+// ✅ Mostrar últimos 6 archivos según fecha actualizada (columna 'Fecha Actualización')
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
   container.innerHTML = "";
@@ -203,7 +203,7 @@ function mostrarUltimosArchivos() {
   const ordenados = dataConFecha.sort((a, b) =>
     new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
   );
-  const ultimos = ordenados.slice(0, 4);
+  const ultimos = ordenados.slice(0, 6);
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
@@ -223,3 +223,23 @@ function mostrarUltimosArchivos() {
     container.appendChild(card);
   });
 }
+document.addEventListener("DOMContentLoaded", () => {
+  fetch(DATA_URL)
+    .then(res => res.json())
+    .then(data => {
+      rawData = data;
+      initializeFilters();
+      mostrarUltimosArchivos();
+      document.getElementById("cargando").style.display = "none"; // 🔄 Ocultar spinner
+    })
+    .catch(err => {
+      console.error("Error al cargar datos:", err);
+      document.getElementById("cargando").innerHTML = "<p>Error al cargar los archivos.</p>";
+    });
+
+  document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
+  document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
+  document.getElementById("filtro-anio").addEventListener("change", handleAnioChange);
+  document.getElementById("filtro-materia").addEventListener("change", handleMateriaChange);
+  document.getElementById("btn-buscar").addEventListener("click", handleNombreSearch);
+});
