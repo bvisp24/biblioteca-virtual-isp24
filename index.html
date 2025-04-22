@@ -2,49 +2,44 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biblioteca Virtual ISP24</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Biblioteca Virtual ISP24</h1>
-  </header>
-
   <div class="container">
-    <aside class="filters">
-      <label for="carrera">Carrera:</label>
-      <select id="carrera"><option value="">Seleccionar uno</option></select>
+    <h1>Biblioteca Virtual ISP24</h1>
 
-      <label for="ciclo">Ciclo lectivo:</label>
-      <select id="ciclo" disabled><option value="">Seleccionar uno</option></select>
+    <div class="filters">
+      <select id="carrera" disabled>
+        <option value="">Seleccionar Carrera</option>
+      </select>
+      <select id="ciclo" disabled>
+        <option value="">Seleccionar Ciclo Lectivo</option>
+      </select>
+      <select id="anio" disabled>
+        <option value="">Seleccionar Año de Carrera</option>
+      </select>
+      <select id="materia" disabled>
+        <option value="">Seleccionar Materia</option>
+      </select>
+    </div>
 
-      <label for="anio">Año de carrera:</label>
-      <select id="anio" disabled><option value="">Seleccionar uno</option></select>
-
-      <label for="materia">Materia:</label>
-      <select id="materia" disabled><option value="">Seleccionar uno</option></select>
-    </aside>
-
-    <section class="results">
-      <h2>Resultados</h2>
-      <div id="resultados" class="cards"></div>
-    </section>
+    <div id="resultados" class="cards"></div>
   </div>
 
-  <footer class="footer">
+  <div class="footer">
     <h3>Términos de uso</h3>
-    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales...</p>
+    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales.</p>
+
     <div class="donar">
       <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> ¿Quieren compartir sus archivos? Pueden enviarlos al número del administrador de la biblioteca virtual: <strong>1123456789</strong></p>
-      <p><strong>Alumnos:</strong> ¿Problemas con los archivos? Enviá tus consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
+      <p><strong>Profesores:</strong> Envíen archivos al administrador: <strong>1123456789</strong></p>
+      <p><strong>Alumnos:</strong> Consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
       <hr />
-      <p>También podés ayudarnos con una donación voluntaria para mantener este servicio.</p>
       <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
     </div>
-  </footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
