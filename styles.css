@@ -276,37 +276,17 @@ header {
 }
 .logo-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
   text-align: center;
-  padding: 20px 30px;
-  background-color: rgba(255, 255, 255, 0.85); /* fondo translúcido */
-  border-radius: 12px;
-  margin: 20px auto;
-  width: 95%;
-  max-width: 800px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  backdrop-filter: blur(4px); /* añade un sutil desenfoque */
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .logo-img {
-  height: 90px;
+  height: 60px;
   width: auto;
-  margin-bottom: 12px;
-}
-
-.logo-header {
-  display: flex;
-  flex-direction: row; /* Cambio clave: de column a row */
-  align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  padding: 20px 30px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  margin: 20px auto;
-  width: 95%;
-  max-width: 800px;
-  gap: 20px; /* espacio entre logo y texto */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
