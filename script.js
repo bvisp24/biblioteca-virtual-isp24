@@ -5,7 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
     .then(res => res.json())
     .then(data => {
-      rawData = data;
+      rawData = data.map(item => ({
+        Carrera: item["Carrera"]?.trim(),
+        Ciclo: item["Ciclo lectivo"]?.trim(),
+        Anio: item["Año de carrera"]?.trim(),
+        Materia: item["Materia"]?.trim(),
+        Archivo: item["Nombre de archivo"]?.trim(),
+        URL: item["URL"]?.trim()
+      }));
       initializeFilters();
     })
     .catch(err => {
@@ -19,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeFilters() {
-  const carreras = [...new Set(rawData.map(item => item["Carrera"]).filter(Boolean))].sort();
+  const carreras = [...new Set(rawData.map(item => item.Carrera).filter(Boolean))].sort();
   populateSelect("filtro-carrera", carreras);
 }
 
@@ -34,8 +41,8 @@ function handleCarreraChange() {
 
   const ciclos = [...new Set(
     rawData
-      .filter(item => item["Carrera"] === selectedCarrera)
-      .map(item => item["Ciclo lectivo"])
+      .filter(item => item.Carrera === selectedCarrera)
+      .map(item => item.Ciclo)
       .filter(Boolean)
   )].sort();
 
@@ -54,8 +61,8 @@ function handleCicloChange() {
 
   const anios = [...new Set(
     rawData
-      .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo)
-      .map(item => item["Año de carrera"])
+      .filter(item => item.Carrera === carrera && item.Ciclo === ciclo)
+      .map(item => item.Anio)
       .filter(Boolean)
   )].sort();
 
@@ -75,11 +82,11 @@ function handleAnioChange() {
   const materias = [...new Set(
     rawData
       .filter(item =>
-        item["Carrera"] === carrera &&
-        item["Ciclo lectivo"] === ciclo &&
-        item["Año de carrera"] === anio
+        item.Carrera === carrera &&
+        item.Ciclo === ciclo &&
+        item.Anio === anio
       )
-      .map(item => item["Materia"])
+      .map(item => item.Materia)
       .filter(Boolean)
   )].sort();
 
@@ -97,10 +104,10 @@ function handleMateriaChange() {
 
   const resultados = rawData.filter(
     item =>
-      item["Carrera"] === carrera &&
-      item["Ciclo lectivo"] === ciclo &&
-      item["Año de carrera"] === anio &&
-      item["Materia"] === materia
+      item.Carrera === carrera &&
+      item.Ciclo === ciclo &&
+      item.Anio === anio &&
+      item.Materia === materia
   );
 
   mostrarResultados(resultados);
@@ -120,6 +127,8 @@ function populateSelect(id, opciones) {
     option.textContent = op;
     select.appendChild(option);
   });
+
+  select.style.display = "block";
 }
 
 function showElement(id) {
@@ -156,10 +165,10 @@ function mostrarResultados(data) {
     card.className = "card";
 
     const h3 = document.createElement("h3");
-    h3.textContent = item["Nombre de archivo"];
+    h3.textContent = item.Archivo;
 
     const link = document.createElement("a");
-    link.href = item["URL"];
+    link.href = item.URL;
     link.target = "_blank";
     link.className = "btn";
     link.textContent = "Ver archivo PDF";
