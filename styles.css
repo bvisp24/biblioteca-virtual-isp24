@@ -290,3 +290,13 @@ header {
   height: 60px;
   width: auto;
 }
+.logo-esquina {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 80px; /* ajustá el tamaño como prefieras */
+  height: auto;
+  z-index: 999; /* que esté por encima del resto */
+  background: none;
+  pointer-events: none; /* opcional: evita que el logo bloquee clics si está encima de algo */
+}
