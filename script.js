@@ -7,12 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       rawData = data;
       initializeFilters();
-      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 6 actualizados
-      document.getElementById("cargando").style.display = "none"; // 🔄 Ocultar spinner
+      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 4 actualizados
     })
     .catch(err => {
       console.error("Error al cargar datos:", err);
-      document.getElementById("cargando").innerHTML = "<p>Error al cargar los archivos.</p>";
     });
 
   document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
@@ -127,7 +125,7 @@ function populateSelect(id, opciones) {
 }
 
 function showElement(id) {
-  document.querySelector(`label[for="${id}"]`).style.display = "block";
+  document.querySelector(label[for="${id}"]).style.display = "block";
   document.getElementById(id).style.display = "block";
 }
 
@@ -135,7 +133,7 @@ function clearSelect(id) {
   const select = document.getElementById(id);
   select.innerHTML = "";
   select.style.display = "none";
-  const label = document.querySelector(`label[for="${id}"]`);
+  const label = document.querySelector(label[for="${id}"]);
   if (label) label.style.display = "none";
 }
 
@@ -196,19 +194,16 @@ function handleNombreSearch() {
   }
 }
 
-// ✅ Mostrar últimos 6 archivos según fecha actualizada (columna 'Fecha Actualización')
+// ✅ Mostrar últimos 4 archivos según fecha actualizada (columna 'Fecha Actualización')
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
-  container.innerHTML = "<h2>Últimos archivos actualizados</h2>";
+  container.innerHTML = "";
 
   const dataConFecha = rawData.filter(item => item["Fecha Actualización"]);
   const ordenados = dataConFecha.sort((a, b) =>
     new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
   );
-  const ultimos = ordenados.slice(0, 6);
-
-  const cardsContainer = document.createElement("div");
-  cardsContainer.className = "cards";
+  const ultimos = ordenados.slice(0, 4);
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
@@ -225,8 +220,6 @@ function mostrarUltimosArchivos() {
 
     card.appendChild(h3);
     card.appendChild(link);
-    cardsContainer.appendChild(card);
+    container.appendChild(card);
   });
-
-  container.appendChild(cardsContainer);
 }
