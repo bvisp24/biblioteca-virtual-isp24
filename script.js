@@ -1,71 +1,75 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxU6UCDMccEoTeAqi5ESJkA1SoBr1-ExXXXXX/exec"; // reemplaza por tu URL
 
-let allData = [];
+let data = [];
 
-async function fetchData() {
-  const res = await fetch(API_URL);
-  const json = await res.json();
-  allData = json;
+document.addEventListener('DOMContentLoaded', async () => {
+  const res = await fetch(SCRIPT_URL);
+  data = await res.json();
   populateFilters();
-  filterData(); // Mostrar todo al inicio
-}
+  filterData();
+});
 
 function populateFilters() {
-  const carreraSelect = document.getElementById("carrera");
-  const ciclolectivoSelect = document.getElementById("ciclolectivo");
-  const añocarreraSelect = document.getElementById("añocarrera");
-  const materiaSelect = document.getElementById("materia");
+  const carreraSet = new Set();
+  const cicloSet = new Set();
+  const añoSet = new Set();
+  const materiaSet = new Set();
 
-  const carreras = [...new Set(allData.map(row => row.Carrera))];
-  const ciclos = [...new Set(allData.map(row => row.CicloLectivo))];
-  const años = [...new Set(allData.map(row => row.Año))];
-  const materias = [...new Set(allData.map(row => row.Materia))];
+  data.forEach(item => {
+    carreraSet.add(item.Carrera);
+    cicloSet.add(item['Ciclo lectivo']);
+    añoSet.add(item['Año de carrera']);
+    materiaSet.add(item.Materia);
+  });
 
-  [carreraSelect, ciclolectivoSelect, añocarreraSelect, materiaSelect].forEach(select => select.innerHTML = "<option value=''>Todos</option>");
+  populateSelect('carrera', carreraSet);
+  populateSelect('ciclolectivo', cicloSet);
+  populateSelect('añocarrera', añoSet);
+  populateSelect('materia', materiaSet);
+}
 
-  carreras.forEach(c => carreraSelect.innerHTML += `<option value="${c}">${c}</option>`);
-  ciclos.forEach(c => ciclolectivoSelect.innerHTML += `<option value="${c}">${c}</option>`);
-  años.forEach(a => añocarreraSelect.innerHTML += `<option value="${a}">${a}</option>`);
-  materias.forEach(m => materiaSelect.innerHTML += `<option value="${m}">${m}</option>`);
+function populateSelect(id, values) {
+  const select = document.getElementById(id);
+  select.innerHTML = '<option value="">-- Todas --</option>';
+  [...values].sort().forEach(val => {
+    const opt = document.createElement('option');
+    opt.value = val;
+    opt.textContent = val;
+    select.appendChild(opt);
+  });
 }
 
 function filterData() {
-  const carrera = document.getElementById("carrera").value;
-  const ciclo = document.getElementById("ciclolectivo").value;
-  const año = document.getElementById("añocarrera").value;
-  const materia = document.getElementById("materia").value;
+  const carrera = document.getElementById('carrera').value;
+  const ciclo = document.getElementById('ciclolectivo').value;
+  const año = document.getElementById('añocarrera').value;
+  const materia = document.getElementById('materia').value;
 
-  const results = allData.filter(row => {
-    return (!carrera || row.Carrera === carrera)
-        && (!ciclo || row.CicloLectivo === ciclo)
-        && (!año || row.Año === año)
-        && (!materia || row.Materia === materia);
-  });
+  const filtered = data.filter(item =>
+    (!carrera || item.Carrera === carrera) &&
+    (!ciclo || item['Ciclo lectivo'] === ciclo) &&
+    (!año || item['Año de carrera'] === año) &&
+    (!materia || item.Materia === materia)
+  );
 
-  showResults(results);
-}
+  const fileList = document.getElementById('fileList');
+  fileList.innerHTML = '';
 
-function showResults(data) {
-  const fileList = document.getElementById("fileList");
-  fileList.innerHTML = "";
-
-  if (data.length === 0) {
-    fileList.innerHTML = "<p>No se encontraron resultados.</p>";
+  if (filtered.length === 0) {
+    fileList.innerHTML = '<p>No se encontraron resultados.</p>';
     return;
   }
 
-  data.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card';
     card.innerHTML = `
-      <strong>${item.Materia}</strong>
-      <p><b>Carrera:</b> ${item.Carrera}</p>
-      <p><b>Ciclo:</b> ${item.CicloLectivo}</p>
-      <p><b>Año:</b> ${item.Año}</p>
-      <p><a href="${item.URL}" target="_blank">📄 Ver archivo</a></p>
+      <h3>${item.Materia}</h3>
+      <p><strong>Carrera:</strong> ${item.Carrera}</p>
+      <p><strong>Ciclo lectivo:</strong> ${item['Ciclo lectivo']}</p>
+      <p><strong>Año:</strong> ${item['Año de carrera']}</p>
+      <a href="${item.Enlace}" target="_blank" class="btn">Ver archivo</a>
     `;
     fileList.appendChild(card);
   });
 }
-
-document.addEventListener("DOMContentLoaded", fetchData);
