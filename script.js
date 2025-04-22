@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       rawData = data;
       initializeFilters();
-      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 4 actualizados
+      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 6 actualizados
+      document.getElementById("cargando").style.display = "none"; // 🔄 Ocultar spinner
     })
     .catch(err => {
       console.error("Error al cargar datos:", err);
+      document.getElementById("cargando").innerHTML = "<p>Error al cargar los archivos.</p>";
     });
 
   document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
@@ -197,13 +199,16 @@ function handleNombreSearch() {
 // ✅ Mostrar últimos 6 archivos según fecha actualizada (columna 'Fecha Actualización')
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
-  container.innerHTML = "";
+  container.innerHTML = "<h2>Últimos archivos actualizados</h2>";
 
   const dataConFecha = rawData.filter(item => item["Fecha Actualización"]);
   const ordenados = dataConFecha.sort((a, b) =>
     new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
   );
   const ultimos = ordenados.slice(0, 6);
+
+  const cardsContainer = document.createElement("div");
+  cardsContainer.className = "cards";
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
@@ -220,26 +225,8 @@ function mostrarUltimosArchivos() {
 
     card.appendChild(h3);
     card.appendChild(link);
-    container.appendChild(card);
+    cardsContainer.appendChild(card);
   });
-}
-document.addEventListener("DOMContentLoaded", () => {
-  fetch(DATA_URL)
-    .then(res => res.json())
-    .then(data => {
-      rawData = data;
-      initializeFilters();
-      mostrarUltimosArchivos();
-      document.getElementById("cargando").style.display = "none"; // 🔄 Ocultar spinner
-    })
-    .catch(err => {
-      console.error("Error al cargar datos:", err);
-      document.getElementById("cargando").innerHTML = "<p>Error al cargar los archivos.</p>";
-    });
 
-  document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
-  document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
-  document.getElementById("filtro-anio").addEventListener("change", handleAnioChange);
-  document.getElementById("filtro-materia").addEventListener("change", handleMateriaChange);
-  document.getElementById("btn-buscar").addEventListener("click", handleNombreSearch);
-});
+  container.appendChild(cardsContainer);
+}
