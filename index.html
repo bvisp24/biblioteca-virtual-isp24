@@ -14,13 +14,18 @@
 
   <div class="container">
     <div class="filters">
+      <div class="buscador">
+  <label for="busqueda-nombre">Buscar por nombre de archivo:</label>
+  <div class="buscador-input">
+    <input type="text" id="busqueda-nombre" placeholder="Ej. Historia Argentina..." />
+    <button id="btn-buscar" title="Buscar">
+      🔍
+    </button>
+  </div>
+</div>
       <label for="filtro-carrera">Busqueda</label>
       <label for="filtro-carrera">Seleccioná tu carrera:</label>
-        <div class="buscador">
-  <label for="busqueda-nombre">Buscar por nombre de archivo:</label>
-  <input type="text" id="busqueda-nombre" placeholder="Ej. Historia Argentina..." />
-      <select id="filtro-carrera">
-        <option value="">Seleccionar uno</option>
+      <option value="">Seleccionar uno</option>
       </select>
 
       <label for="filtro-ciclo" style="display:none;">Seleccioná el ciclo lectivo:</label>
