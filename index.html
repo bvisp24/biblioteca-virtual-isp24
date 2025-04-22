@@ -7,30 +7,44 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="container">
+  <header>
     <h1>Biblioteca Virtual ISP24</h1>
-    
-    <div class="filtros">
-      <h2>Búsqueda</h2>
-      <p class="indicacion">Seleccione su carrera para continuar</p>
+    <p>Seleccioná tu carrera, ciclo lectivo, año y materia para acceder a los archivos disponibles.</p>
+  </header>
 
-      <label for="filtro-carrera">Carrera</label>
+  <div class="container">
+    <div class="filters">
+      <label for="filtro-carrera">Seleccioná tu carrera:</label>
       <select id="filtro-carrera">
         <option value="">Seleccionar uno</option>
       </select>
 
-      <label for="filtro-ciclo" style="display:none;">Ciclo Lectivo</label>
-      <select id="filtro-ciclo" style="display:none;"></select>
+      <label for="filtro-ciclo" style="display:none;">Seleccioná el ciclo lectivo:</label>
+      <select id="filtro-ciclo" style="display:none;">
+        <option value="">Seleccionar uno</option>
+      </select>
 
-      <label for="filtro-anio" style="display:none;">Año de Carrera</label>
-      <select id="filtro-anio" style="display:none;"></select>
+      <label for="filtro-anio" style="display:none;">Seleccioná el año:</label>
+      <select id="filtro-anio" style="display:none;">
+        <option value="">Seleccionar uno</option>
+      </select>
 
-      <label for="filtro-materia" style="display:none;">Materia</label>
-      <select id="filtro-materia" style="display:none;"></select>
+      <label for="filtro-materia" style="display:none;">Seleccioná la materia:</label>
+      <select id="filtro-materia" style="display:none;">
+        <option value="">Seleccionar uno</option>
+      </select>
     </div>
 
-    <div id="resultados" class="resultados"></div>
+    <div class="results">
+      <div id="resultados" class="cards"></div>
+    </div>
   </div>
+
+  <footer class="footer">
+    <div class="donar">
+      <p>Gracias por usar nuestra biblioteca digital. Si querés colaborar con más material, contactanos.</p>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
