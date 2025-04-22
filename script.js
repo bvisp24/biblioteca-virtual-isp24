@@ -1,65 +1,63 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
+const DATA_URL = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
 
-let fullData = [];
+let allData = [];
 
-async function fetchData() {
-  try {
-    const res = await fetch(scriptURL);
-    fullData = await res.json();
-    loadFilters();
-    filterData();
-  } catch (e) {
-    console.error("Error al obtener datos:", e);
-  }
-}
+document.addEventListener("DOMContentLoaded", async () => {
+  const response = await fetch(DATA_URL);
+  const data = await response.json();
+  allData = data;
 
-function loadFilters() {
-  const carrera = new Set();
-  const ciclolectivo = new Set();
-  const añocarrera = new Set();
-  const materia = new Set();
+  populateFilters();
+  filterData();
+});
 
-  fullData.forEach(item => {
-    carrera.add(item.Carrera);
-    ciclolectivo.add(item["Ciclo Lectivo"]);
-    añocarrera.add(item["Año Carrera"]);
-    materia.add(item.Materia);
+function populateFilters() {
+  const carreraSet = new Set();
+  const cicloSet = new Set();
+  const añoSet = new Set();
+  const materiaSet = new Set();
+
+  allData.forEach(row => {
+    carreraSet.add(row["Carrera"]);
+    cicloSet.add(row["Ciclo Lectivo"]);
+    añoSet.add(row["Año"]);
+    materiaSet.add(row["Materia"]);
   });
 
-  populateSelect("carrera", [...carrera]);
-  populateSelect("ciclolectivo", [...ciclolectivo]);
-  populateSelect("añocarrera", [...añocarrera]);
-  populateSelect("materia", [...materia]);
+  fillSelect("carrera", carreraSet);
+  fillSelect("ciclolectivo", cicloSet);
+  fillSelect("añocarrera", añoSet);
+  fillSelect("materia", materiaSet);
 }
 
-function populateSelect(id, values) {
+function fillSelect(id, set) {
   const select = document.getElementById(id);
-  select.innerHTML = '<option value="">Todos</option>';
-  values.sort().forEach(val => {
+  select.innerHTML = '<option value="">-- Todos --</option>';
+  Array.from(set).sort().forEach(item => {
     const option = document.createElement("option");
-    option.value = val;
-    option.textContent = val;
+    option.value = item;
+    option.textContent = item;
     select.appendChild(option);
   });
 }
 
 function filterData() {
-  const c = document.getElementById("carrera").value;
-  const cl = document.getElementById("ciclolectivo").value;
-  const ac = document.getElementById("añocarrera").value;
-  const m = document.getElementById("materia").value;
+  const carrera = document.getElementById("carrera").value;
+  const ciclo = document.getElementById("ciclolectivo").value;
+  const año = document.getElementById("añocarrera").value;
+  const materia = document.getElementById("materia").value;
 
-  const filtered = fullData.filter(item =>
-    (c === "" || item.Carrera === c) &&
-    (cl === "" || item["Ciclo Lectivo"] === cl) &&
-    (ac === "" || item["Año Carrera"] === ac) &&
-    (m === "" || item.Materia === m)
-  );
+  const filtered = allData.filter(row => {
+    return (!carrera || row["Carrera"] === carrera) &&
+           (!ciclo || row["Ciclo Lectivo"] === ciclo) &&
+           (!año || row["Año"] === año) &&
+           (!materia || row["Materia"] === materia);
+  });
 
-  showFiles(filtered);
+  displayFiles(filtered);
 }
 
-function showFiles(data) {
+function displayFiles(data) {
   const fileList = document.getElementById("fileList");
   fileList.innerHTML = "";
 
@@ -68,18 +66,14 @@ function showFiles(data) {
     return;
   }
 
-  data.forEach(file => {
+  data.forEach(row => {
     const card = document.createElement("div");
     card.className = "card";
-
-    card.innerHTML = `
-      <h4>${file.Materia}</h4>
-      <p><strong>Archivo:</strong> <a href="${file.Enlace}" target="_blank">${file.Archivo}</a></p>
-      <p><strong>Año:</strong> ${file["Año Carrera"]} | <strong>Ciclo:</strong> ${file["Ciclo Lectivo"]}</p>
-    `;
-
+    const link = document.createElement("a");
+    link.href = row["Archivo"];
+    link.target = "_blank";
+    link.textContent = row["Archivo"].split("/").pop(); // nombre del archivo
+    card.appendChild(link);
     fileList.appendChild(card);
   });
 }
-
-document.addEventListener("DOMContentLoaded", fetchData);
