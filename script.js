@@ -4,11 +4,11 @@ let rawData = [];
 document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
     .then(res => res.json())
-  .then(data => {
-  rawData = data;
-  initializeFilters();
-  mostrarUltimosArchivos(); // 👈 mostramos los últimos 10
-})
+    .then(data => {
+      rawData = data;
+      initializeFilters();
+      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 4 actualizados
+    })
     .catch(err => {
       console.error("Error al cargar datos:", err);
     });
@@ -193,11 +193,17 @@ function handleNombreSearch() {
     container.innerHTML = "<p>Su archivo no fue encontrado. Búsquelo de forma manual. Gracias.</p>";
   }
 }
+
+// ✅ Mostrar últimos 4 archivos según fecha actualizada (columna 'Fecha Actualización')
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
   container.innerHTML = "";
 
-  const ultimos = rawData.slice(-4).reverse(); // toma los últimos 4 y los invierte
+  const dataConFecha = rawData.filter(item => item["Fecha Actualización"]);
+  const ordenados = dataConFecha.sort((a, b) =>
+    new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
+  );
+  const ultimos = ordenados.slice(0, 4);
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
@@ -216,15 +222,4 @@ function mostrarUltimosArchivos() {
     card.appendChild(link);
     container.appendChild(card);
   });
-}
-function onEdit(e) {
-  const sheet = e.source.getActiveSheet();
-  const colFecha = 7; // Por ejemplo, columna G
-  const fila = e.range.getRow();
-
-  // Evita modificar el encabezado
-  if (fila === 1) return;
-
-  // Coloca la fecha actual en la columna de fecha
-  sheet.getRange(fila, colFecha).setValue(new Date());
 }
