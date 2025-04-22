@@ -1,22 +1,21 @@
 :root {
   --primary: #1976d2;
-  --bg: #f4f6f8;
+  --bg-overlay: rgba(255, 255, 255, 0.85);
   --white: #fff;
-  --text: #2c3e50;
+  --text: #1a1a1a;
   --shadow: rgba(0, 0, 0, 0.1);
 }
 
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
-  color: var(--text);
   background: url('https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg') no-repeat center center fixed;
   background-size: cover;
-  backdrop-filter: brightness(0.95);
+  color: var(--text);
 }
 
 header {
-  background: var(--primary);
+  background: rgba(25, 118, 210, 0.9);
   color: white;
   padding: 20px;
   text-align: center;
@@ -35,7 +34,7 @@ header {
 .filters {
   flex: 1;
   min-width: 250px;
-  background: var(--white);
+  background: var(--bg-overlay);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 12px var(--shadow);
@@ -58,7 +57,7 @@ header {
 
 .results {
   flex: 3;
-  background: var(--white);
+  background: var(--bg-overlay);
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 12px var(--shadow);
@@ -96,7 +95,7 @@ header {
   max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
-  background: var(--white);
+  background: var(--bg-overlay);
   border-radius: 10px;
   box-shadow: 0 4px 10px var(--shadow);
 }
