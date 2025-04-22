@@ -217,3 +217,14 @@ function mostrarUltimosArchivos() {
     container.appendChild(card);
   });
 }
+function onEdit(e) {
+  const sheet = e.source.getActiveSheet();
+  const colFecha = 7; // Por ejemplo, columna G
+  const fila = e.range.getRow();
+
+  // Evita modificar el encabezado
+  if (fila === 1) return;
+
+  // Coloca la fecha actual en la columna de fecha
+  sheet.getRange(fila, colFecha).setValue(new Date());
+}
