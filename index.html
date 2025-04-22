@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biblioteca Virtual ISP24</title>
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    /* Tu estilo intacto (lo omití para no hacer muy largo el mensaje, pero lo podés copiar tal cual del original) */
-  </style>
 </head>
 <body>
   <header>
@@ -15,109 +13,38 @@
   </header>
 
   <div class="container">
-    <div class="filters">
+    <aside class="filters">
       <h2>Filtrar</h2>
       <label for="carrera">Carrera:</label>
-      <select id="carrera" onchange="updateResults()"></select>
+      <select id="carrera" onchange="filterData()"></select>
 
       <label for="ciclolectivo">Ciclo lectivo:</label>
-      <select id="ciclolectivo" onchange="updateResults()"></select>
+      <select id="ciclolectivo" onchange="filterData()"></select>
 
       <label for="añocarrera">Año de carrera:</label>
-      <select id="añocarrera" onchange="updateResults()"></select>
+      <select id="añocarrera" onchange="filterData()"></select>
 
       <label for="materia">Materia:</label>
-      <select id="materia" onchange="updateResults()"></select>
-    </div>
+      <select id="materia" onchange="filterData()"></select>
+    </aside>
 
-    <div class="results">
+    <section class="results">
       <h2>Resultados</h2>
-      <ul id="fileList"></ul>
-    </div>
+      <div id="fileList" class="cards"></div>
+    </section>
   </div>
 
-  <div class="footer">
+  <footer class="footer">
     <h3>Términos de uso</h3>
     <p>Esta biblioteca virtual es de acceso libre y gratuito...</p>
     <div class="donar">
       <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> Envíen archivos a: <strong>1123456789</strong></p>
+      <p><strong>Profesores:</strong> Enviar archivos al: <strong>1123456789</strong></p>
       <p><strong>Consultas:</strong> <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
       <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
     </div>
-  </div>
+  </footer>
 
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec';
-    let allData = [];
-
-    async function fetchSpreadsheet() {
-      const response = await fetch(API_URL);
-      const data = await response.json();
-      allData = data;
-
-      const carreraSet = new Set();
-      const ciclolectivoSet = new Set();
-      const añocarreraSet = new Set();
-      const materiaSet = new Set();
-
-      data.forEach(row => {
-        carreraSet.add(row.Carrera);
-        ciclolectivoSet.add(row.CicloLectivo);
-        añocarreraSet.add(row.AnioCarrera);
-        materiaSet.add(row.Materia);
-      });
-
-      fillSelect('carrera', carreraSet);
-      fillSelect('ciclolectivo', ciclolectivoSet);
-      fillSelect('añocarrera', añocarreraSet);
-      fillSelect('materia', materiaSet);
-    }
-
-    function fillSelect(id, values) {
-      const select = document.getElementById(id);
-      select.innerHTML = '<option value="">Todos</option>';
-      values.forEach(val => {
-        const option = document.createElement('option');
-        option.value = val;
-        option.textContent = val;
-        select.appendChild(option);
-      });
-    }
-
-    function updateResults() {
-      const carrera = document.getElementById('carrera').value;
-      const ciclo = document.getElementById('ciclolectivo').value;
-      const anio = document.getElementById('añocarrera').value;
-      const materia = document.getElementById('materia').value;
-
-      const resultados = allData.filter(row => {
-        return (!carrera || row.Carrera === carrera) &&
-               (!ciclo || row.CicloLectivo === ciclo) &&
-               (!anio || row.AnioCarrera === anio) &&
-               (!materia || row.Materia === materia);
-      });
-
-      mostrarArchivos(resultados);
-    }
-
-    function mostrarArchivos(archivos) {
-      const lista = document.getElementById('fileList');
-      lista.innerHTML = '';
-
-      if (archivos.length === 0) {
-        lista.innerHTML = '<li>No se encontraron resultados.</li>';
-        return;
-      }
-
-      archivos.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `<strong>${item.Materia}:</strong> <a href="${item.Archivo}" target="_blank">${item.Archivo}</a>`;
-        lista.appendChild(li);
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', fetchSpreadsheet);
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
