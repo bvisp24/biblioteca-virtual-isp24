@@ -1,13 +1,13 @@
 body {
   font-family: 'Inter', sans-serif;
+  background-color: #f1f5f9;
+  color: #333;
   margin: 0;
   padding: 0;
-  background-color: #f4f7fa;
-  color: #333;
 }
 
 header {
-  background-color: #3a506b;
+  background-color: #334155;
   color: white;
   padding: 1rem;
   text-align: center;
@@ -16,59 +16,53 @@ header {
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
   padding: 1rem;
+  gap: 1rem;
 }
 
 .filters {
-  flex: 1 1 250px;
-  background-color: #fff;
+  flex: 1 1 200px;
+  background-color: #e2e8f0;
   padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
 }
 
 .filters select {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
 }
 
 .results {
-  flex: 3;
+  flex: 3 1 600px;
 }
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .card {
-  background: #ffffff;
-  border-radius: 12px;
+  background-color: white;
   padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
 }
 
 .card:hover {
   transform: scale(1.02);
 }
 
-.card a {
-  text-decoration: none;
-  color: #1b263b;
-  font-weight: bold;
-}
-
 .footer {
-  background-color: #eaeaea;
+  background-color: #cbd5e1;
   padding: 2rem;
   margin-top: 2rem;
 }
 
-.donar {
-  margin-top: 1rem;
+.footer h3, .footer h4 {
+  margin-top: 0;
 }
