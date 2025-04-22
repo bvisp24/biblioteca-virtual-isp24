@@ -1,11 +1,20 @@
 body {
   margin: 0;
-  font-family: "Georgia", serif;
-  background: url('img/biblioteca-fondo.jpg') no-repeat center center fixed;
+  font-family: 'Georgia', serif;
+  background: url('https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg') no-repeat center center fixed;
   background-size: cover;
-  color: #2e2e1f;
+  color: #2e2e2e;
+  backdrop-filter: brightness(0.9) blur(2px);
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgba(255, 248, 240, 0.85);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
 .overlay {
   position: fixed;
   top: 0;
