@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Biblioteca Virtual ISP24</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
@@ -12,45 +12,30 @@
     <h1>Biblioteca Virtual ISP24</h1>
   </header>
 
-  <div class="container">
+  <main class="container">
     <aside class="filters">
       <h2>Filtrar</h2>
       <label for="carrera">Carrera:</label>
-      <select id="carrera">
-        <option value="">Seleccionar uno</option>
-      </select>
+      <select id="carrera"><option value="">Seleccionar uno</option></select>
 
-      <label for="ciclo">Ciclo lectivo:</label>
-      <select id="ciclo" disabled>
-        <option value="">Seleccionar uno</option>
-      </select>
+      <label for="ciclolectivo">Ciclo lectivo:</label>
+      <select id="ciclolectivo" disabled><option value="">Seleccionar uno</option></select>
 
-      <label for="anio">Año de carrera:</label>
-      <select id="anio" disabled>
-        <option value="">Seleccionar uno</option>
-      </select>
+      <label for="añocarrera">Año de carrera:</label>
+      <select id="añocarrera" disabled><option value="">Seleccionar uno</option></select>
 
       <label for="materia">Materia:</label>
-      <select id="materia" disabled>
-        <option value="">Seleccionar uno</option>
-      </select>
+      <select id="materia" disabled><option value="">Seleccionar uno</option></select>
     </aside>
 
     <section class="results">
       <h2>Resultados</h2>
       <div id="fileList" class="cards"></div>
     </section>
-  </div>
+  </main>
 
-  <footer class="footer">
-    <h3>Términos de uso</h3>
-    <p>Esta biblioteca virtual es de acceso libre y gratuito...</p>
-    <div class="donar">
-      <h4>¿Querés colaborar?</h4>
-      <p>Profesores: Enviar archivos al admin: <strong>1123456789</strong></p>
-      <p>Alumnos: Consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte</a></p>
-      <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
-    </div>
+  <footer>
+    <p>Contenido con fines educativos | Contacto: soporte.bibliovirtualisp24@gmail.com</p>
   </footer>
 
   <script src="script.js"></script>
