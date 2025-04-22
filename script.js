@@ -234,38 +234,30 @@ function mostrarUltimosArchivos() {
   });
 
   container.appendChild(cardsContainer);
-}
-function mostrarUltimosArchivos() {
+}function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
-  container.innerHTML = "";
+  container.innerHTML = ""; // Limpiar contenido
 
-  const dataConFecha = rawData.filter(item => item["Fecha Actualización"] && item["URL"]);
-  const ordenados = dataConFecha.sort((a, b) =>
-    new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
-  );
-  const ultimos = ordenados.slice(0, 6);
+  // Filtrar solo filas con URL válida y nombre
+  const dataConURL = rawData.filter(item => item["URL"] && item["Nombre del Archivo"]);
+
+  // Tomar las últimas 6 filas con URL, desde el final del array
+  const ultimos = dataConURL.slice(-6).reverse(); // Lo damos vuelta para mostrar lo más reciente primero
 
   if (ultimos.length === 0) {
     container.innerHTML = "<p>No hay archivos recientes disponibles.</p>";
     return;
   }
 
+  const cardsContainer = document.createElement("div");
+  cardsContainer.className = "cards";
+
   ultimos.forEach(item => {
     const card = document.createElement("div");
     card.className = "card";
 
     const h3 = document.createElement("h3");
-    h3.innerHTML = "📄 " + item["Nombre del Archivo"];
-
-    const fecha = document.createElement("div");
-    fecha.className = "fecha";
-    const fechaFormateada = new Date(item["Fecha Actualización"]).toLocaleDateString("es-AR", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric"
-    });
-    fecha.textContent = `📅 Actualizado el ${fechaFormateada}`;
-
+    h3.textContent = item["Nombre del Archivo"];
 
     const link = document.createElement("a");
     link.href = item["URL"];
@@ -274,36 +266,9 @@ function mostrarUltimosArchivos() {
     link.textContent = "Ver archivo PDF";
 
     card.appendChild(h3);
-    card.appendChild(fecha);
     card.appendChild(link);
-    container.appendChild(card);
+    cardsContainer.appendChild(card);
   });
+
+  container.appendChild(cardsContainer);
 }
-ultimos.forEach((item, index) => {
-  const card = document.createElement("div");
-  card.className = "card";
-  card.style.animationDelay = `${index * 0.1}s`; // escalonado
-
-  const h3 = document.createElement("h3");
-  h3.innerHTML = "📄 " + item["Nombre del Archivo"];
-
-  const fecha = document.createElement("div");
-  fecha.className = "fecha";
-  const fechaFormateada = new Date(item["Fecha Actualización"]).toLocaleDateString("es-AR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  });
-  fecha.textContent = `📅 Actualizado el ${fechaFormateada}`;
-
-  const link = document.createElement("a");
-  link.href = item["URL"];
-  link.target = "_blank";
-  link.className = "btn";
-  link.textContent = "Ver archivo PDF";
-
-  card.appendChild(h3);
-  card.appendChild(fecha);
-  card.appendChild(link);
-  container.appendChild(card);
-});
