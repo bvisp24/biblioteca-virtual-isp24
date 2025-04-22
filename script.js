@@ -4,14 +4,12 @@ let rawData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
-    .then((res) => res.json())
-    .then((data) => {
+    .then(res => res.json())
+    .then(data => {
       rawData = data;
       initializeFilters();
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+    .catch(error => console.error("Error cargando datos:", error));
 
   document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
   document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
@@ -20,20 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeFilters() {
-  const container = document.getElementById("filtro-carrera").parentElement;
-  const label = document.createElement("label");
-  label.textContent = "Filtro: Seleccione su carrera para continuar";
-  label.style.display = "block";
-  label.style.fontWeight = "bold";
-  label.style.textAlign = "center";
-  label.style.marginBottom = "10px";
-  container.insertBefore(label, document.getElementById("filtro-carrera"));
-
   const carreras = [...new Set(rawData.map(item => item["Carrera"]).filter(Boolean))].sort();
   populateSelect("filtro-carrera", carreras);
-  container.style.display = "flex";
-  container.style.flexDirection = "column";
-  container.style.alignItems = "center";
 }
 
 function handleCarreraChange() {
@@ -42,18 +28,16 @@ function handleCarreraChange() {
   clearSelect("filtro-materia");
   clearResults();
 
-  const selectedCarrera = this.value;
-  if (!selectedCarrera) return;
+  const selected = this.value;
+  if (!selected) return;
 
-  const ciclos = [...new Set(
-    rawData
-      .filter(item => item["Carrera"] === selectedCarrera)
-      .map(item => item["Ciclo lectivo"])
-      .filter(Boolean)
-  )].sort();
+  const ciclos = [...new Set(rawData
+    .filter(item => item["Carrera"] === selected)
+    .map(item => item["Ciclo lectivo"])
+    .filter(Boolean))].sort();
 
   populateSelect("filtro-ciclo", ciclos);
-  document.getElementById("filtro-ciclo").parentElement.style.display = "block";
+  document.getElementById("filtro-ciclo-container").style.display = "block";
 }
 
 function handleCicloChange() {
@@ -63,17 +47,14 @@ function handleCicloChange() {
 
   const carrera = document.getElementById("filtro-carrera").value;
   const ciclo = this.value;
-  if (!carrera || !ciclo) return;
 
-  const anios = [...new Set(
-    rawData
-      .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo)
-      .map(item => item["Año de carrera"])
-      .filter(Boolean)
-  )].sort();
+  const anios = [...new Set(rawData
+    .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo)
+    .map(item => item["Año de carrera"])
+    .filter(Boolean))].sort();
 
   populateSelect("filtro-anio", anios);
-  document.getElementById("filtro-anio").parentElement.style.display = "block";
+  document.getElementById("filtro-anio-container").style.display = "block";
 }
 
 function handleAnioChange() {
@@ -83,17 +64,14 @@ function handleAnioChange() {
   const carrera = document.getElementById("filtro-carrera").value;
   const ciclo = document.getElementById("filtro-ciclo").value;
   const anio = this.value;
-  if (!carrera || !ciclo || !anio) return;
 
-  const materias = [...new Set(
-    rawData
-      .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo && item["Año de carrera"] === anio)
-      .map(item => item["Materia"])
-      .filter(Boolean)
-  )].sort();
+  const materias = [...new Set(rawData
+    .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo && item["Año de carrera"] === anio)
+    .map(item => item["Materia"])
+    .filter(Boolean))].sort();
 
   populateSelect("filtro-materia", materias);
-  document.getElementById("filtro-materia").parentElement.style.display = "block";
+  document.getElementById("filtro-materia-container").style.display = "block";
 }
 
 function handleMateriaChange() {
@@ -104,28 +82,29 @@ function handleMateriaChange() {
   const anio = document.getElementById("filtro-anio").value;
   const materia = this.value;
 
-  const resultados = rawData.filter(
-    item =>
-      item["Carrera"] === carrera &&
-      item["Ciclo lectivo"] === ciclo &&
-      item["Año de carrera"] === anio &&
-      item["Materia"] === materia
+  const resultados = rawData.filter(item =>
+    item["Carrera"] === carrera &&
+    item["Ciclo lectivo"] === ciclo &&
+    item["Año de carrera"] === anio &&
+    item["Materia"] === materia
   );
 
   mostrarResultados(resultados);
 }
 
-function populateSelect(id, opciones) {
+function populateSelect(id, options) {
   const select = document.getElementById(id);
+  select.innerHTML = "";
+
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.textContent = "Seleccionar uno";
   select.appendChild(defaultOption);
 
-  opciones.forEach(opcion => {
+  options.forEach(op => {
     const option = document.createElement("option");
-    option.value = opcion;
-    option.textContent = opcion;
+    option.value = op;
+    option.textContent = op;
     select.appendChild(option);
   });
 }
@@ -133,7 +112,7 @@ function populateSelect(id, opciones) {
 function clearSelect(id) {
   const select = document.getElementById(id);
   select.innerHTML = "";
-  select.parentElement.style.display = "none";
+  document.getElementById(`${id}-container`).style.display = "none";
 }
 
 function clearResults() {
@@ -151,14 +130,11 @@ function mostrarResultados(data) {
 
   data.forEach(item => {
     const card = document.createElement("div");
-    card.classList.add("resultado");
-
+    card.className = "resultado";
     const link = document.createElement("a");
     link.href = item["URL"];
     link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.innerHTML = `<img src="img/pdf-icon.png" alt="PDF" class="pdf-icon" /> ${item["Nombre de archivo"]}`;
-
+    link.innerHTML = `<img src="img/pdf-icon.png" class="pdf-icon" alt="PDF"> ${item["Nombre de archivo"]}`;
     card.appendChild(link);
     container.appendChild(card);
   });
