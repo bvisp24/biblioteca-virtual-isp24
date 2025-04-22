@@ -105,6 +105,6 @@ fetch(API_URL)
     selects.materia.addEventListener("change", filtrarDatos);
   })
   .catch(error => {
-    console.error("Error al cargar datos:", error);
-    resultados.innerHTML = "<p>Error al cargar los datos.</p>";
+    console.error("Aqui se mostraran los resultados:", error);
+    resultados.innerHTML = "<p>Aqui se mostraran los resultados</p>";
   });
