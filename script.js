@@ -197,7 +197,7 @@ function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
   container.innerHTML = "";
 
-  const ultimos = rawData.slice(-10).reverse(); // toma los últimos 10 y los invierte
+  const ultimos = rawData.slice(-4).reverse(); // toma los últimos 4 y los invierte
 
   ultimos.forEach(item => {
     const card = document.createElement("div");
