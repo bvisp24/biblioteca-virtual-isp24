@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
   document.getElementById("filtro-anio").addEventListener("change", handleAnioChange);
   document.getElementById("filtro-materia").addEventListener("change", handleMateriaChange);
+  document.getElementById("btn-buscar").addEventListener("click", handleNombreSearch);
 });
 
 function initializeFilters() {
@@ -171,32 +172,7 @@ function mostrarResultados(data) {
 
   container.appendChild(cardsContainer);
 }
-function handleNombreSearch(e) {
-  const searchTerm = e.target.value.toLowerCase();
-  clearResults();
 
-  if (!searchTerm) return;
-
-  const resultados = rawData.filter(item =>
-    item["Nombre del Archivo"] && item["Nombre del Archivo"].toLowerCase().includes(searchTerm)
-  );
-
-  mostrarResultados(resultados);
-}
-function handleNombreSearch() {
-  const input = document.getElementById("busqueda-nombre");
-  const searchTerm = input.value.trim().toLowerCase();
-  clearResults();
-
-  if (!searchTerm) return;
-
-  const resultados = rawData.filter(item =>
-    item["Nombre del Archivo"] &&
-    item["Nombre del Archivo"].toLowerCase().includes(searchTerm)
-  );
-
-  mostrarResultados(resultados);
-}
 function handleNombreSearch() {
   const input = document.getElementById("busqueda-nombre");
   const searchTerm = input.value.trim().toLowerCase();
