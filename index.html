@@ -7,34 +7,38 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="overlay"></div>
-  <main class="contenedor">
-    <header class="encabezado">
+  <div class="container">
+    <header>
       <h1>📚 Biblioteca Virtual ISP24</h1>
-      <p>Explorá los materiales por carrera, ciclo, año y materia. Seleccioná paso a paso para encontrar lo que necesitás.</p>
+      <p>Seleccione su carrera y explore los materiales disponibles por ciclo, año y materia.</p>
     </header>
 
-    <section class="filtros">
-      <div class="filtro" id="filtro-carrera-container">
-        <label for="filtro-carrera">🎓 Filtro: Seleccione su carrera para continuar</label>
-        <select id="filtro-carrera"></select>
+    <div class="filtros">
+      <div class="filtro" id="grupo-carrera">
+        <label for="filtro-carrera">Carrera</label>
+        <select id="filtro-carrera">
+          <option value="">Seleccionar uno</option>
+        </select>
       </div>
-      <div class="filtro" id="filtro-ciclo-container" style="display: none;">
-        <label for="filtro-ciclo">📅 Ciclo Lectivo</label>
+
+      <div class="filtro" id="grupo-ciclo" style="display:none;">
+        <label for="filtro-ciclo">Ciclo Lectivo</label>
         <select id="filtro-ciclo"></select>
       </div>
-      <div class="filtro" id="filtro-anio-container" style="display: none;">
-        <label for="filtro-anio">📘 Año de Carrera</label>
+
+      <div class="filtro" id="grupo-anio" style="display:none;">
+        <label for="filtro-anio">Año de Carrera</label>
         <select id="filtro-anio"></select>
       </div>
-      <div class="filtro" id="filtro-materia-container" style="display: none;">
-        <label for="filtro-materia">📚 Materia</label>
+
+      <div class="filtro" id="grupo-materia" style="display:none;">
+        <label for="filtro-materia">Materia</label>
         <select id="filtro-materia"></select>
       </div>
-    </section>
+    </div>
 
-    <section id="resultados" class="resultados"></section>
-  </main>
+    <div id="resultados" class="resultados"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
