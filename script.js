@@ -171,3 +171,15 @@ function mostrarResultados(data) {
 
   container.appendChild(cardsContainer);
 }
+function handleNombreSearch(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  clearResults();
+
+  if (!searchTerm) return;
+
+  const resultados = rawData.filter(item =>
+    item["Nombre del Archivo"] && item["Nombre del Archivo"].toLowerCase().includes(searchTerm)
+  );
+
+  mostrarResultados(resultados);
+}
