@@ -183,3 +183,17 @@ function handleNombreSearch(e) {
 
   mostrarResultados(resultados);
 }
+function handleNombreSearch() {
+  const input = document.getElementById("busqueda-nombre");
+  const searchTerm = input.value.trim().toLowerCase();
+  clearResults();
+
+  if (!searchTerm) return;
+
+  const resultados = rawData.filter(item =>
+    item["Nombre del Archivo"] &&
+    item["Nombre del Archivo"].toLowerCase().includes(searchTerm)
+  );
+
+  mostrarResultados(resultados);
+}
