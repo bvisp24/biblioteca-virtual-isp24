@@ -148,16 +148,16 @@
     <div class="filters">
       <h2>Filtrar</h2>
       <label for="carrera">Carrera:</label>
-      <select id="carrera" onchange="updateMateria()"></select>
+      <select id="carrera" onchange="updateResults()"></select>
 
       <label for="ciclolectivo">Ciclo lectivo:</label>
-      <select id="ciclolectivo" onchange="updateYear()"></select>
+      <select id="ciclolectivo" onchange="updateResults()"></select>
 
       <label for="añocarrera">Año de carrera:</label>
-      <select id="añocarrera" onchange="updateMateria()"></select>
+      <select id="añocarrera" onchange="updateResults()"></select>
 
       <label for="materia">Materia:</label>
-      <select id="materia" onchange="fetchFiles()"></select>
+      <select id="materia" onchange="updateResults()"></select>
     </div>
 
     <div class="results">
@@ -166,84 +166,88 @@
     </div>
   </div>
 
-<div class="footer">
-  <h3>Términos de uso</h3>
-  <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales. El uso responsable de los materiales es fundamental para mantener este recurso disponible para toda la comunidad educativa.</p>
+  <div class="footer">
+    <h3>Términos de uso</h3>
+    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales. El uso responsable de los materiales es fundamental para mantener este recurso disponible para toda la comunidad educativa.</p>
 
-  <div class="donar">
-    <h4>¿Querés colaborar?</h4>
-    <p><strong>Profesores:</strong> ¿Quieren compartir sus archivos? Pueden enviarlos al número del administrador de la biblioteca virtual: <strong>1123456789</strong></p>
-    <p><strong>Alumnos:</strong> ¿Problemas con los archivos? Enviá tus consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
-    <hr />
-    <p>También podés ayudarnos con una donación voluntaria para mantener este servicio.</p>
-    <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
+    <div class="donar">
+      <h4>¿Querés colaborar?</h4>
+      <p><strong>Profesores:</strong> ¿Quieren compartir sus archivos? Pueden enviarlos al número del administrador de la biblioteca virtual: <strong>1123456789</strong></p>
+      <p><strong>Alumnos:</strong> ¿Problemas con los archivos? Enviá tus consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
+      <hr />
+      <p>También podés ayudarnos con una donación voluntaria para mantener este servicio.</p>
+      <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
+    </div>
   </div>
-</div>
 
   <script>
-    const SHEET_ID = '1tTfCtb0SJMPtB3diWgYDCV4nfBqWKeQPKdXNM7e31rA';
-    const SHEET_NAME = 'Hoja1';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec';
+    let allData = [];
 
     async function fetchSpreadsheet() {
-      const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=YOUR_API_KEY`);
+      const response = await fetch(API_URL);
       const data = await response.json();
-      const rows = data.values;
+      allData = data;
 
       const carreraSet = new Set();
       const ciclolectivoSet = new Set();
       const añocarreraSet = new Set();
       const materiaSet = new Set();
 
-      rows.forEach(row => {
-        carreraSet.add(row[0]);
-        ciclolectivoSet.add(row[1]);
-        añocarreraSet.add(row[2]);
-        materiaSet.add(row[3]);
+      data.forEach(row => {
+        carreraSet.add(row.Carrera);
+        ciclolectivoSet.add(row.CicloLectivo);
+        añocarreraSet.add(row.AnioCarrera);
+        materiaSet.add(row.Materia);
       });
 
-      const carreraSelect = document.getElementById('carrera');
-      carreraSet.forEach(c => {
-        const option = document.createElement('option');
-        option.text = c;
-        option.value = c;
-        carreraSelect.add(option);
-      });
+      fillSelect('carrera', carreraSet);
+      fillSelect('ciclolectivo', ciclolectivoSet);
+      fillSelect('añocarrera', añocarreraSet);
+      fillSelect('materia', materiaSet);
+    }
 
-      const ciclolectivoSelect = document.getElementById('ciclolectivo');
-      ciclolectivoSet.forEach(cl => {
+    function fillSelect(id, values) {
+      const select = document.getElementById(id);
+      select.innerHTML = '<option value="">Todos</option>';
+      values.forEach(val => {
         const option = document.createElement('option');
-        option.text = cl;
-        option.value = cl;
-        ciclolectivoSelect.add(option);
-      });
-
-      const añocarreraSelect = document.getElementById('añocarrera');
-      añocarreraSet.forEach(ac => {
-        const option = document.createElement('option');
-        option.text = ac;
-        option.value = ac;
-        añocarreraSelect.add(option);
-      });
-
-      const materiaSelect = document.getElementById('materia');
-      materiaSet.forEach(m => {
-        const option = document.createElement('option');
-        option.text = m;
-        option.value = m;
-        materiaSelect.add(option);
+        option.value = val;
+        option.textContent = val;
+        select.appendChild(option);
       });
     }
 
-    function updateMateria() {
-      // Completar tu lógica
+    function updateResults() {
+      const carrera = document.getElementById('carrera').value;
+      const ciclo = document.getElementById('ciclolectivo').value;
+      const anio = document.getElementById('añocarrera').value;
+      const materia = document.getElementById('materia').value;
+
+      const resultados = allData.filter(row => {
+        return (!carrera || row.Carrera === carrera) &&
+               (!ciclo || row.CicloLectivo === ciclo) &&
+               (!anio || row.AnioCarrera === anio) &&
+               (!materia || row.Materia === materia);
+      });
+
+      mostrarArchivos(resultados);
     }
 
-    function updateYear() {
-      // Completar tu lógica
-    }
+    function mostrarArchivos(archivos) {
+      const lista = document.getElementById('fileList');
+      lista.innerHTML = '';
 
-    async function fetchFiles() {
-      // Completar tu lógica
+      if (archivos.length === 0) {
+        lista.innerHTML = '<li>No se encontraron resultados.</li>';
+        return;
+      }
+
+      archivos.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${item.Materia}:</strong> <a href="${item.Archivo}" target="_blank">${item.Archivo}</a>`;
+        lista.appendChild(li);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', fetchSpreadsheet);
