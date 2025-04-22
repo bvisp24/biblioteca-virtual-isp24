@@ -235,3 +235,42 @@ function mostrarUltimosArchivos() {
 
   container.appendChild(cardsContainer);
 }
+function mostrarUltimosArchivos() {
+  const container = document.getElementById("ultimos-resultados");
+  container.innerHTML = "";
+
+  const dataConFecha = rawData.filter(item => item["Fecha Actualización"] && item["URL"]);
+  const ordenados = dataConFecha.sort((a, b) =>
+    new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
+  );
+  const ultimos = ordenados.slice(0, 6);
+
+  if (ultimos.length === 0) {
+    container.innerHTML = "<p>No hay archivos recientes disponibles.</p>";
+    return;
+  }
+
+  ultimos.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const h3 = document.createElement("h3");
+    h3.innerHTML = "📄 " + item["Nombre del Archivo"];
+
+    const fecha = document.createElement("div");
+    fecha.className = "fecha";
+    const fechaFormateada = new Date(item["Fecha Actualización"]).toLocaleDateString();
+    fecha.textContent = `Actualizado: ${fechaFormateada}`;
+
+    const link = document.createElement("a");
+    link.href = item["URL"];
+    link.target = "_blank";
+    link.className = "btn";
+    link.textContent = "Ver archivo PDF";
+
+    card.appendChild(h3);
+    card.appendChild(fecha);
+    card.appendChild(link);
+    container.appendChild(card);
+  });
+}
