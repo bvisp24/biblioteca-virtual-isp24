@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Biblioteca Virtual ISP24</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
+  <div class="contenedor">
     <header>
-      <h1>📚 Biblioteca Virtual ISP24</h1>
-      <p>Seleccione su carrera y explore los materiales disponibles por ciclo, año y materia.</p>
+      <h1>Biblioteca Virtual ISP24</h1>
+      <p>Bienvenido a la Biblioteca Virtual del Instituto ISP24. Nuestra misión es brindar acceso libre y organizado al material académico de todas las carreras. Si sos estudiante, docente o colaborador, te invitamos a explorar, compartir y enriquecer este espacio.</p>
     </header>
 
-    <div class="filtros">
-      <div class="filtro" id="grupo-carrera">
-        <label for="filtro-carrera">Carrera</label>
+    <section class="filtros">
+      <div class="filtro">
+        <label for="filtro-carrera">Seleccione su carrera:</label>
         <select id="filtro-carrera">
           <option value="">Seleccionar uno</option>
         </select>
       </div>
-
-      <div class="filtro" id="grupo-ciclo" style="display:none;">
-        <label for="filtro-ciclo">Ciclo Lectivo</label>
+      <div class="filtro" style="display: none;">
+        <label for="filtro-ciclo">Ciclo lectivo:</label>
         <select id="filtro-ciclo"></select>
       </div>
-
-      <div class="filtro" id="grupo-anio" style="display:none;">
-        <label for="filtro-anio">Año de Carrera</label>
+      <div class="filtro" style="display: none;">
+        <label for="filtro-anio">Año de carrera:</label>
         <select id="filtro-anio"></select>
       </div>
-
-      <div class="filtro" id="grupo-materia" style="display:none;">
-        <label for="filtro-materia">Materia</label>
+      <div class="filtro" style="display: none;">
+        <label for="filtro-materia">Materia:</label>
         <select id="filtro-materia"></select>
       </div>
-    </div>
+    </section>
 
-    <div id="resultados" class="resultados"></div>
+    <section id="resultados" class="resultados"></section>
   </div>
 
   <script src="script.js"></script>
