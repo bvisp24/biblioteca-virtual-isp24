@@ -251,3 +251,26 @@ header {
 .card .btn:hover {
   background: #0d47a1;
 }
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0; /* se mostrará al cargarse */
+}
+
+.card .fecha {
+  font-size: 0.9em;
+  color: #555;
+  margin: 8px 0;
+  font-style: italic;
+  transition: opacity 0.3s ease;
+}
