@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeFilters() {
   const carreras = [...new Set(rawData.map(item => item["Carrera"]).filter(Boolean))].sort();
   populateSelect("filtro-carrera", carreras);
+  document.getElementById("filtro-carrera").parentElement.style.display = "block";
 }
 
 function handleCarreraChange() {
@@ -130,6 +131,7 @@ function clearResults() {
 
 function mostrarResultados(data) {
   const container = document.getElementById("resultados");
+  container.innerHTML = "";
 
   if (data.length === 0) {
     container.innerHTML = "<p>No se encontraron archivos.</p>";
@@ -143,7 +145,8 @@ function mostrarResultados(data) {
     const link = document.createElement("a");
     link.href = item["URL"];
     link.target = "_blank";
-    link.innerHTML = `<img src="pdf-icon.png" alt="PDF" /> ${item["Nombre de archivo"]}`;
+    link.rel = "noopener noreferrer";
+    link.innerHTML = `<img src="img/pdf-icon.png" alt="PDF" class="pdf-icon" /> ${item["Nombre de archivo"]}`;
 
     card.appendChild(link);
     container.appendChild(card);
