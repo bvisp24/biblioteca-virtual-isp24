@@ -1,82 +1,110 @@
-const url = "https://script.google.com/macros/s/AKfycbwJxUVd3FUGs9vcAkVTgjlagtpGc8YRf0FMZFOICS1kWzHqEZc4bg5F7QFFq8VA_ice/exec";
+const API_URL = "https://script.google.com/macros/library/d/1vu2hz6iY5DM_h2MJHL0V-Mgg_cWCmYjs5elyefBsDWC7WsagcUuODVOT/3";
 
-let data = [];
+let datos = [];
 
-window.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch(url);
-  data = await res.json();
-  populateCarrera();
-});
+const selects = {
+  carrera: document.getElementById("carrera"),
+  ciclo: document.getElementById("ciclo"),
+  anio: document.getElementById("anio"),
+  materia: document.getElementById("materia"),
+};
 
-function uniqueOptions(columnName, filter = {}) {
-  const filtered = data.filter(item => {
-    return Object.entries(filter).every(([key, val]) => !val || item[key] === val);
-  });
-  return [...new Set(filtered.map(item => item[columnName]))].sort();
+const resultados = document.getElementById("resultados");
+
+function limpiarSelect(select) {
+  select.innerHTML = '<option value="">Seleccionar uno</option>';
+  select.disabled = true;
 }
 
-function populateSelect(id, values) {
-  const select = document.getElementById(id);
-  select.innerHTML = '<option value="">Seleccionar uno</option>';
-  values.forEach(val => {
-    const option = document.createElement('option');
-    option.value = val;
-    option.textContent = val;
+function cargarOpciones(select, opciones) {
+  limpiarSelect(select);
+  opciones.forEach(op => {
+    const option = document.createElement("option");
+    option.value = op;
+    option.textContent = op;
     select.appendChild(option);
   });
   select.disabled = false;
 }
 
-function populateCarrera() {
-  const carreras = uniqueOptions("Carrera");
-  populateSelect("carrera", carreras);
+function filtrarDatos() {
+  let filtrados = datos;
+  if (selects.carrera.value) filtrados = filtrados.filter(d => d.Carrera === selects.carrera.value);
+  if (selects.ciclo.value) filtrados = filtrados.filter(d => d["Ciclo Lectivo"] === selects.ciclo.value);
+  if (selects.anio.value) filtrados = filtrados.filter(d => d["Año de Carrera"] === selects.anio.value);
+  if (selects.materia.value) filtrados = filtrados.filter(d => d.Materia === selects.materia.value);
+
+  mostrarResultados(filtrados);
 }
 
-document.getElementById("carrera").addEventListener("change", () => {
-  const carrera = document.getElementById("carrera").value;
-  populateSelect("ciclo", uniqueOptions("Ciclo Lectivo", { "Carrera": carrera }));
-  document.getElementById("anio").disabled = true;
-  document.getElementById("materia").disabled = true;
-  document.getElementById("resultados").innerHTML = "";
-});
+function mostrarResultados(filas) {
+  resultados.innerHTML = "";
+  if (filas.length === 0) {
+    resultados.innerHTML = "<p>No se encontraron resultados.</p>";
+    return;
+  }
 
-document.getElementById("ciclo").addEventListener("change", () => {
-  const carrera = document.getElementById("carrera").value;
-  const ciclo = document.getElementById("ciclo").value;
-  populateSelect("anio", uniqueOptions("Año de Carrera", { "Carrera": carrera, "Ciclo Lectivo": ciclo }));
-  document.getElementById("materia").disabled = true;
-  document.getElementById("resultados").innerHTML = "";
-});
+  filas.forEach(fila => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-document.getElementById("anio").addEventListener("change", () => {
-  const carrera = document.getElementById("carrera").value;
-  const ciclo = document.getElementById("ciclo").value;
-  const anio = document.getElementById("anio").value;
-  populateSelect("materia", uniqueOptions("Materia", {
-    "Carrera": carrera,
-    "Ciclo Lectivo": ciclo,
-    "Año de Carrera": anio
-  }));
-  document.getElementById("resultados").innerHTML = "";
-});
+    const enlace = document.createElement("a");
+    enlace.href = fila.URL;
+    enlace.textContent = fila["Nombre de Archivo"];
+    enlace.target = "_blank";
 
-document.getElementById("materia").addEventListener("change", () => {
-  const carrera = document.getElementById("carrera").value;
-  const ciclo = document.getElementById("ciclo").value;
-  const anio = document.getElementById("anio").value;
-  const materia = document.getElementById("materia").value;
+    card.appendChild(enlace);
+    resultados.appendChild(card);
+  });
+}
 
-  const resultados = data.filter(item =>
-    item["Carrera"] === carrera &&
-    item["Ciclo Lectivo"] === ciclo &&
-    item["Año de Carrera"] === anio &&
-    item["Materia"] === materia
-  );
+function obtenerUnicos(campo, filtro) {
+  return [...new Set(
+    datos
+      .filter(filtro)
+      .map(d => d[campo])
+      .filter(v => v && v.trim() !== "")
+  )];
+}
 
-  const contenedor = document.getElementById("resultados");
-  contenedor.innerHTML = resultados.map(item => `
-    <div class="card">
-      <a href="${item["URL"]}" target="_blank">${item["Nombre de Archivo"]}</a>
-    </div>
-  `).join("");
-});
+fetch(API_URL)
+  .then(res => res.json())
+  .then(json => {
+    datos = json;
+
+    const carreras = obtenerUnicos("Carrera", () => true);
+    cargarOpciones(selects.carrera, carreras);
+
+    selects.carrera.addEventListener("change", () => {
+      const ciclos = obtenerUnicos("Ciclo Lectivo", d => d.Carrera === selects.carrera.value);
+      cargarOpciones(selects.ciclo, ciclos);
+      limpiarSelect(selects.anio);
+      limpiarSelect(selects.materia);
+      mostrarResultados([]);
+    });
+
+    selects.ciclo.addEventListener("change", () => {
+      const anios = obtenerUnicos("Año de Carrera", d =>
+        d.Carrera === selects.carrera.value && d["Ciclo Lectivo"] === selects.ciclo.value
+      );
+      cargarOpciones(selects.anio, anios);
+      limpiarSelect(selects.materia);
+      mostrarResultados([]);
+    });
+
+    selects.anio.addEventListener("change", () => {
+      const materias = obtenerUnicos("Materia", d =>
+        d.Carrera === selects.carrera.value &&
+        d["Ciclo Lectivo"] === selects.ciclo.value &&
+        d["Año de Carrera"] === selects.anio.value
+      );
+      cargarOpciones(selects.materia, materias);
+      mostrarResultados([]);
+    });
+
+    selects.materia.addEventListener("change", filtrarDatos);
+  })
+  .catch(error => {
+    console.error("Error al cargar datos:", error);
+    resultados.innerHTML = "<p>Error al cargar los datos.</p>";
+  });
