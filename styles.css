@@ -1,21 +1,21 @@
 :root {
   --primary: #1976d2;
-  --bg-overlay: rgba(255, 255, 255, 0.85);
-  --white: #fff;
+  --bg: rgba(255, 255, 255, 0.7);
+  --white: #ffffff;
   --text: #1a1a1a;
-  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow: rgba(0, 0, 0, 0.15);
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
-  background: url('https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg') no-repeat center center fixed;
-  background-size: cover;
   color: var(--text);
+  background: url("https://ihal.it/wp-content/uploads/2024/02/Hugging-Face-Cosmopedia.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
 header {
-  background: rgba(25, 118, 210, 0.9);
+  background: rgba(25, 118, 210, 0.85);
   color: white;
   padding: 20px;
   text-align: center;
@@ -34,15 +34,15 @@ header {
 .filters {
   flex: 1;
   min-width: 250px;
-  background: var(--bg-overlay);
+  background: var(--bg);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 4px 12px var(--shadow);
 }
 
 .filters label {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   font-weight: 600;
 }
 
@@ -57,9 +57,9 @@ header {
 
 .results {
   flex: 3;
-  background: var(--bg-overlay);
+  background: var(--bg);
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 4px 12px var(--shadow);
 }
 
@@ -76,27 +76,18 @@ header {
   box-shadow: 0 2px 6px var(--shadow);
 }
 
-.card h3 {
-  margin-top: 0;
-  color: var(--primary);
-}
-
-.card .btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: var(--primary);
-  color: white;
-  border-radius: 5px;
+.card a {
   text-decoration: none;
+  color: var(--primary);
+  font-weight: bold;
 }
 
 .footer {
   max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
-  background: var(--bg-overlay);
-  border-radius: 10px;
+  background: var(--bg);
+  border-radius: 12px;
   box-shadow: 0 4px 10px var(--shadow);
 }
 
