@@ -4,104 +4,86 @@ let rawData = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   fetch(DATA_URL)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       rawData = data;
-      initializeFilters();
+      initCarrera();
     })
-    .catch(error => console.error("Error cargando datos:", error));
+    .catch((error) => console.error("Error:", error));
 
-  document.getElementById("filtro-carrera").addEventListener("change", handleCarreraChange);
-  document.getElementById("filtro-ciclo").addEventListener("change", handleCicloChange);
-  document.getElementById("filtro-anio").addEventListener("change", handleAnioChange);
-  document.getElementById("filtro-materia").addEventListener("change", handleMateriaChange);
+  document.getElementById("filtro-carrera").addEventListener("change", handleCarrera);
+  document.getElementById("filtro-ciclo").addEventListener("change", handleCiclo);
+  document.getElementById("filtro-anio").addEventListener("change", handleAnio);
+  document.getElementById("filtro-materia").addEventListener("change", handleMateria);
 });
 
-function initializeFilters() {
+function initCarrera() {
   const carreras = [...new Set(rawData.map(item => item["Carrera"]).filter(Boolean))].sort();
-  populateSelect("filtro-carrera", carreras);
+  fillSelect("filtro-carrera", carreras);
 }
 
-function handleCarreraChange() {
-  clearSelect("filtro-ciclo");
-  clearSelect("filtro-anio");
-  clearSelect("filtro-materia");
+function handleCarrera() {
+  resetSelect("filtro-ciclo");
+  resetSelect("filtro-anio");
+  resetSelect("filtro-materia");
   clearResults();
 
-  const selected = this.value;
-  if (!selected) return;
+  const carrera = this.value;
+  if (!carrera) return;
 
-  const ciclos = [...new Set(rawData
-    .filter(item => item["Carrera"] === selected)
-    .map(item => item["Ciclo lectivo"])
-    .filter(Boolean))].sort();
-
-  populateSelect("filtro-ciclo", ciclos);
-  document.getElementById("filtro-ciclo-container").style.display = "block";
+  const ciclos = [...new Set(rawData.filter(item => item["Carrera"] === carrera).map(i => i["Ciclo lectivo"]).filter(Boolean))].sort();
+  fillSelect("filtro-ciclo", ciclos);
+  document.getElementById("grupo-ciclo").style.display = "block";
 }
 
-function handleCicloChange() {
-  clearSelect("filtro-anio");
-  clearSelect("filtro-materia");
+function handleCiclo() {
+  resetSelect("filtro-anio");
+  resetSelect("filtro-materia");
   clearResults();
 
   const carrera = document.getElementById("filtro-carrera").value;
   const ciclo = this.value;
+  if (!carrera || !ciclo) return;
 
-  const anios = [...new Set(rawData
-    .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo)
-    .map(item => item["Año de carrera"])
-    .filter(Boolean))].sort();
-
-  populateSelect("filtro-anio", anios);
-  document.getElementById("filtro-anio-container").style.display = "block";
+  const anios = [...new Set(rawData.filter(i => i["Carrera"] === carrera && i["Ciclo lectivo"] === ciclo).map(i => i["Año de carrera"]).filter(Boolean))].sort();
+  fillSelect("filtro-anio", anios);
+  document.getElementById("grupo-anio").style.display = "block";
 }
 
-function handleAnioChange() {
-  clearSelect("filtro-materia");
+function handleAnio() {
+  resetSelect("filtro-materia");
   clearResults();
 
   const carrera = document.getElementById("filtro-carrera").value;
   const ciclo = document.getElementById("filtro-ciclo").value;
   const anio = this.value;
+  if (!carrera || !ciclo || !anio) return;
 
-  const materias = [...new Set(rawData
-    .filter(item => item["Carrera"] === carrera && item["Ciclo lectivo"] === ciclo && item["Año de carrera"] === anio)
-    .map(item => item["Materia"])
-    .filter(Boolean))].sort();
-
-  populateSelect("filtro-materia", materias);
-  document.getElementById("filtro-materia-container").style.display = "block";
+  const materias = [...new Set(rawData.filter(i => i["Carrera"] === carrera && i["Ciclo lectivo"] === ciclo && i["Año de carrera"] === anio).map(i => i["Materia"]).filter(Boolean))].sort();
+  fillSelect("filtro-materia", materias);
+  document.getElementById("grupo-materia").style.display = "block";
 }
 
-function handleMateriaChange() {
-  clearResults();
-
+function handleMateria() {
   const carrera = document.getElementById("filtro-carrera").value;
   const ciclo = document.getElementById("filtro-ciclo").value;
   const anio = document.getElementById("filtro-anio").value;
   const materia = this.value;
 
-  const resultados = rawData.filter(item =>
-    item["Carrera"] === carrera &&
-    item["Ciclo lectivo"] === ciclo &&
-    item["Año de carrera"] === anio &&
-    item["Materia"] === materia
+  const resultados = rawData.filter(
+    i => i["Carrera"] === carrera &&
+         i["Ciclo lectivo"] === ciclo &&
+         i["Año de carrera"] === anio &&
+         i["Materia"] === materia
   );
 
-  mostrarResultados(resultados);
+  showResults(resultados);
 }
 
-function populateSelect(id, options) {
+function fillSelect(id, opciones) {
   const select = document.getElementById(id);
-  select.innerHTML = "";
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "Seleccionar uno";
-  select.appendChild(defaultOption);
-
-  options.forEach(op => {
+  select.innerHTML = '<option value="">Seleccionar uno</option>';
+  opciones.forEach(op => {
     const option = document.createElement("option");
     option.value = op;
     option.textContent = op;
@@ -109,17 +91,17 @@ function populateSelect(id, options) {
   });
 }
 
-function clearSelect(id) {
+function resetSelect(id) {
   const select = document.getElementById(id);
   select.innerHTML = "";
-  document.getElementById(`${id}-container`).style.display = "none";
+  select.parentElement.style.display = "none";
 }
 
 function clearResults() {
   document.getElementById("resultados").innerHTML = "";
 }
 
-function mostrarResultados(data) {
+function showResults(data) {
   const container = document.getElementById("resultados");
   container.innerHTML = "";
 
@@ -129,13 +111,12 @@ function mostrarResultados(data) {
   }
 
   data.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "resultado";
-    const link = document.createElement("a");
-    link.href = item["URL"];
-    link.target = "_blank";
-    link.innerHTML = `<img src="img/pdf-icon.png" class="pdf-icon" alt="PDF"> ${item["Nombre de archivo"]}`;
-    card.appendChild(link);
-    container.appendChild(card);
+    const div = document.createElement("div");
+    div.className = "resultado";
+    div.innerHTML = `<a href="${item["URL"]}" target="_blank" rel="noopener noreferrer">
+      <img src="img/pdf-icon.png" class="pdf-icon" alt="PDF" />
+      ${item["Nombre de archivo"]}
+    </a>`;
+    container.appendChild(div);
   });
 }
