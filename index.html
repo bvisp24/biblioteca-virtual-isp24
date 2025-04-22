@@ -2,43 +2,34 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biblioteca Virtual ISP24</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>Biblioteca Virtual ISP24</h1>
-    <p class="presentacion">
-      Bienvenidos a la Biblioteca Virtual del ISP24. Este espacio ha sido creado con el objetivo de facilitar el acceso a material de estudio para toda nuestra comunidad educativa. 
-      <br><br>
-      Invitamos a estudiantes y docentes a colaborar compartiendo sus archivos. ¡Entre todos construimos una biblioteca abierta, inclusiva y útil!
-    </p>
-  </header>
-
+  <div class="overlay"></div>
   <main class="contenedor">
-    <aside class="filtros">
-<select id="filtro-carrera"></select>
-<select id="filtro-ciclo" style="display:none;"></select>
-<select id="filtro-anio" style="display:none;"></select>
-<select id="filtro-materia" style="display:none;"></select>
-<div id="resultados"></div>
-    </aside>
+    <section class="filtros">
+      <div class="filtro" id="filtro-carrera-container">
+        <label for="filtro-carrera">🎓 Filtro: Seleccione su carrera para continuar</label>
+        <select id="filtro-carrera"></select>
+      </div>
+      <div class="filtro" id="filtro-ciclo-container" style="display: none;">
+        <label for="filtro-ciclo">📅 Ciclo Lectivo</label>
+        <select id="filtro-ciclo"></select>
+      </div>
+      <div class="filtro" id="filtro-anio-container" style="display: none;">
+        <label for="filtro-anio">📘 Año de Carrera</label>
+        <select id="filtro-anio"></select>
+      </div>
+      <div class="filtro" id="filtro-materia-container" style="display: none;">
+        <label for="filtro-materia">📚 Materia</label>
+        <select id="filtro-materia"></select>
+      </div>
+    </section>
 
     <section id="resultados" class="resultados"></section>
   </main>
-
-  <footer class="footer">
-    <h3>Términos de uso</h3>
-    <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales.</p>
-    <div class="donar">
-      <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> ¿Quieren compartir sus archivos? Envíenlos al administrador: <strong>1123456789</strong></p>
-      <p><strong>Alumnos:</strong> Problemas con archivos, escribinos a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
-      <hr />
-      <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
-    </div>
-  </footer>
 
   <script src="script.js"></script>
 </body>
