@@ -4,10 +4,14 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
+  background-image: url('https://png.pngtree.com/background/20230519/original/pngtree-library-with-many-books-and-a-spiral-staircase-picture-image_2666081.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 header {
-  background-color: #e0d6c3;
+  background-color: rgba(224, 214, 195, 0.9);
   padding: 2rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -29,6 +33,7 @@ header h1 {
   gap: 2rem;
   padding: 2rem;
   flex-wrap: wrap;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .filtros {
@@ -78,7 +83,7 @@ header h1 {
 }
 
 .footer {
-  background-color: #eee3cf;
+  background-color: rgba(238, 227, 207, 0.9);
   padding: 2rem;
   text-align: center;
   margin-top: 2rem;
