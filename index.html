@@ -2,47 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Biblioteca Virtual ISP24</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
   <header>
-    <h1>Biblioteca Virtual ISP24</h1>
+    <h1>📚 Biblioteca Virtual ISP24</h1>
+    <p>Accedé al material digital por carrera, ciclo y materia</p>
   </header>
 
   <div class="container">
-    <aside class="filters">
-      <h2>Filtrar</h2>
-      <label for="carrera">Carrera:</label>
-      <select id="carrera" onchange="filterData()"></select>
+    <div class="filters">
+      <label for="filtro-carrera">Filtro: Seleccione su carrera para continuar</label>
+      <select id="filtro-carrera">
+        <option value="">Seleccionar uno</option>
+      </select>
 
-      <label for="ciclolectivo">Ciclo lectivo:</label>
-      <select id="ciclolectivo" onchange="filterData()"></select>
+      <label for="filtro-ciclo" style="display:none;">Ciclo lectivo</label>
+      <select id="filtro-ciclo" style="display:none;"></select>
 
-      <label for="añocarrera">Año de carrera:</label>
-      <select id="añocarrera" onchange="filterData()"></select>
+      <label for="filtro-anio" style="display:none;">Año de carrera</label>
+      <select id="filtro-anio" style="display:none;"></select>
 
-      <label for="materia">Materia:</label>
-      <select id="materia" onchange="filterData()"></select>
-    </aside>
+      <label for="filtro-materia" style="display:none;">Materia</label>
+      <select id="filtro-materia" style="display:none;"></select>
+    </div>
 
-    <section class="results">
-      <h2>Resultados</h2>
-      <div id="fileList" class="cards"></div>
-    </section>
+    <div class="results" id="resultados">
+      <p>Seleccione una carrera para comenzar...</p>
+    </div>
   </div>
 
   <footer class="footer">
-    <h3>Términos de uso</h3>
-    <p>Esta biblioteca virtual es de acceso libre y gratuito...</p>
     <div class="donar">
-      <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> Enviar archivos al: <strong>1123456789</strong></p>
-      <p><strong>Alumnos:</strong> <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
-      <hr />
-      <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
+      Si te resultó útil, compartí este sitio con tus compañerxs. 💖
     </div>
   </footer>
 
