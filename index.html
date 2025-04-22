@@ -14,19 +14,22 @@
 
   <div class="container">
     <div class="filters">
+      <!-- Buscador -->
       <div class="buscador">
-  <label for="busqueda-nombre">Buscar por nombre de archivo:</label>
-  <div class="buscador-input">
-    <input type="text" id="busqueda-nombre" placeholder="Ej. Historia Argentina..." />
-    <button id="btn-buscar" title="Buscar">
-      🔍
-    </button>
-  </div>
-</div>
-      
-      <label for="filtro-carrera">Blibioteca Virtual </label>
+        <label for="busqueda-nombre">Buscar por nombre de archivo:</label>
+        <div class="buscador-input">
+          <input type="text" id="busqueda-nombre" placeholder="Ej. Historia Argentina..." />
+          <button id="btn-buscar" title="Buscar">🔍</button>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <h2>Búsqueda</h2>
+      <p>Seleccione su carrera para continuar</p>
+
       <label for="filtro-carrera">Seleccioná tu carrera:</label>
-      <option value="">Seleccionar uno</option>
+      <select id="filtro-carrera">
+        <option value="">Seleccionar uno</option>
       </select>
 
       <label for="filtro-ciclo" style="display:none;">Seleccioná el ciclo lectivo:</label>
