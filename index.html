@@ -4,31 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Biblioteca Virtual ISP24</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header>
-    <h1>📚 Biblioteca Virtual ISP24</h1>
+    <h1>Biblioteca Virtual ISP24</h1>
   </header>
+  <main class="container">
+    <aside class="filters">
+      <label for="carrera">Carrera:</label>
+      <select id="carrera"><option value="">Seleccionar uno</option></select>
 
-  <section class="filtros">
-    <select id="filtroCarrera"><option selected disabled>Seleccionar Carrera</option></select>
-    <select id="filtroCiclo"><option selected disabled>Seleccionar Ciclo Lectivo</option></select>
-    <select id="filtroAnio"><option selected disabled>Seleccionar Año de Carrera</option></select>
-    <select id="filtroMateria"><option selected disabled>Seleccionar Materia</option></select>
-  </section>
+      <label for="ciclo">Ciclo Lectivo:</label>
+      <select id="ciclo" disabled><option value="">Seleccionar uno</option></select>
 
-  <section id="resultados" class="resultados"></section>
+      <label for="anio">Año de Carrera:</label>
+      <select id="anio" disabled><option value="">Seleccionar uno</option></select>
+
+      <label for="materia">Materia:</label>
+      <select id="materia" disabled><option value="">Seleccionar uno</option></select>
+    </aside>
+
+    <section class="results" id="resultados">
+      <p>Seleccioná filtros para ver archivos.</p>
+    </section>
+  </main>
 
   <footer class="footer">
     <h3>Términos de uso</h3>
     <p>Esta biblioteca virtual es de acceso libre y gratuito. Todo el contenido está destinado exclusivamente para fines educativos y no comerciales.</p>
     <div class="donar">
       <h4>¿Querés colaborar?</h4>
-      <p><strong>Profesores:</strong> Envíen archivos al número del administrador: <strong>1123456789</strong></p>
-      <p><strong>Alumnos:</strong> Consultas: <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
-      <hr />
-      <p>Alias para donar: <code>biblio.isp24</code></p>
+      <p><strong>Profesores:</strong> Envíen sus archivos al 1123456789</p>
+      <p><strong>Alumnos:</strong> Consultas a <a href="mailto:soporte.bibliovirtualisp24@gmail.com">soporte.bibliovirtualisp24@gmail.com</a></p>
+      <hr/>
+      <p><strong>Alias para donar:</strong> <code>biblio.isp24</code></p>
     </div>
   </footer>
 
