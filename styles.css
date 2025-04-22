@@ -112,3 +112,20 @@ header {
     flex-direction: column;
   }
 }
+.buscador {
+  margin-top: 20px;
+}
+
+.buscador label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.buscador input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+}
