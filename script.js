@@ -7,8 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(data => {
       rawData = data;
       initializeFilters();
-      mostrarUltimosArchivos(); // ✅ Mostrar los últimos 6 actualizados
-      document.getElementById("cargando").style.display = "none"; // 🔄 Ocultar spinner
+      mostrarUltimosArchivos(); // ✅ Mostrar los últimos archivos
+      document.getElementById("cargando").style.display = "none";
     })
     .catch(err => {
       console.error("Error al cargar datos:", err);
@@ -196,16 +196,21 @@ function handleNombreSearch() {
   }
 }
 
-// ✅ Mostrar últimos 6 archivos según fecha actualizada (columna 'Fecha Actualización')
+// ✅ Mostrar últimos archivos subidos según fecha y URL
 function mostrarUltimosArchivos() {
   const container = document.getElementById("ultimos-resultados");
-  container.innerHTML = "<h2>Últimos archivos actualizados</h2>";
+  container.innerHTML = ""; // Limpiar contenido
 
-  const dataConFecha = rawData.filter(item => item["Fecha Actualización"]);
+  const dataConFecha = rawData.filter(item => item["Fecha Actualización"] && item["URL"]);
   const ordenados = dataConFecha.sort((a, b) =>
     new Date(b["Fecha Actualización"]) - new Date(a["Fecha Actualización"])
   );
   const ultimos = ordenados.slice(0, 6);
+
+  if (ultimos.length === 0) {
+    container.innerHTML = "<p>No hay archivos recientes disponibles.</p>";
+    return;
+  }
 
   const cardsContainer = document.createElement("div");
   cardsContainer.className = "cards";
