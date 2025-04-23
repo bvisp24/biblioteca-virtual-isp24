@@ -289,14 +289,11 @@ header {
 .logo-img {
   height: 60px;
   width: auto;
+  margin-right: 10px; /* espacio entre el logo y el texto */
 }
+
 .logo-esquina {
-  position:
-  top: 10px;
-  left: 10px;
-  width: 80px; /* ajustá el tamaño como prefieras */
-  height: auto;
-  z-index: 999; /* que esté por encima del resto */
-  background: none;
-  pointer-events: none; /* opcional: evita que el logo bloquee clics si está encima de algo */
+  position: relative;
+  display: flex;
+  align-items: center;
 }
