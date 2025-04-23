@@ -287,15 +287,16 @@ header {
 }
 
 .logo-img {
-  height: 60px;
+  height: 40px;   /* antes estaba en 60px, lo bajamos */
   width: auto;
-  margin-right: 10px; /* espacio entre el logo y el texto */
+  margin-right: 10px;
+  max-height: 100%; /* asegura que no desborde el header */
 }
 
 .logo-esquina {
-  padding: 10px 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* fondo opcional */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  max-height: 60px; /* opcional */
 }
