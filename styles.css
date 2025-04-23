@@ -14,14 +14,33 @@ body {
   color: var(--text);
 }
 
-header {
-  background: rgba(25, 118, 210, 0.9);
-  color: white;
+/* ---------------- HEADER CON LOGO + TÍTULO ---------------- */
+.logo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
   padding: 20px;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 800px;
   box-shadow: 0 2px 8px var(--shadow);
 }
 
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.titulo-biblioteca {
+  font-size: 1.8rem;
+  color: #1a237e;
+  margin: 0;
+}
+
+/* ---------------- LAYOUT GENERAL ---------------- */
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -74,56 +93,72 @@ header {
   margin-bottom: 15px;
 }
 
+/* ---------------- CARDS ---------------- */
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
+  justify-content: center;
 }
 
 .card {
-  background: #e3f2fd;
-  padding: 15px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 2px 6px var(--shadow);
+  padding: 16px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.card:hover {
+  transform: scale(1.03);
 }
 
 .card h3 {
-  margin-top: 0;
-  color: var(--primary);
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #0d47a1;
+}
+
+.card .fecha {
+  font-size: 0.9em;
+  color: #616161;
+  margin-bottom: 10px;
+  font-style: italic;
 }
 
 .card .btn {
   display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
   background: var(--primary);
   color: white;
-  border-radius: 5px;
-  text-decoration: none;
-}
-
-.footer {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 20px;
-  background: var(--bg-overlay);
-  border-radius: 10px;
-  box-shadow: 0 4px 10px var(--shadow);
-}
-
-.donar {
-  background: #e8f5e9;
-  padding: 15px;
-  border-left: 5px solid #43a047;
+  padding: 8px 16px;
   border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
+.card .btn:hover {
+  background: #0d47a1;
+}
+
+/* ---------------- ANIMACIONES ---------------- */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+/* ---------------- BUSCADOR ---------------- */
 .buscador {
   margin-top: 20px;
 }
@@ -157,6 +192,23 @@ header {
   font-size: 16px;
 }
 
+/* ---------------- SECCIÓN ÚLTIMOS ARCHIVOS ---------------- */
+#ultimos {
+  margin: 40px auto;
+  padding: 20px;
+  background: var(--bg-overlay);
+  border-radius: 12px;
+  max-width: 1000px;
+}
+
+#ultimos h2 {
+  text-align: center;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  color: #1a237e;
+}
+
+/* ---------------- CARGANDO ---------------- */
 #cargando {
   position: fixed;
   top: 0;
@@ -165,12 +217,10 @@ header {
   height: 100vh;
   background: rgba(255, 255, 255, 0.95);
   z-index: 9999;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   font-family: 'Segoe UI', sans-serif;
   font-size: 1.2em;
   color: #333;
@@ -188,118 +238,41 @@ header {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-#ultimos {
+
+/* ---------------- FOOTER ---------------- */
+.footer {
+  max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  max-width: 1000px;
-}
-
-#ultimos h2 {
-  text-align: center;
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  color: #1a237e;
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-}
-
-.card {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
+  background: var(--bg-overlay);
   border-radius: 10px;
-  padding: 16px;
-  width: 280px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 10px var(--shadow);
 }
 
-.card:hover {
-  transform: scale(1.03);
-}
-
-.card h3 {
-  font-size: 1.1em;
-  margin-bottom: 10px;
-  color: #0d47a1;
-}
-
-.card .fecha {
-  font-size: 0.9em;
-  color: #616161;
-  margin-bottom: 10px;
-}
-
-.card .btn {
-  display: inline-block;
-  background: #1976d2;
-  color: white;
-  padding: 8px 16px;
+.donar {
+  background: #e8f5e9;
+  padding: 15px;
+  border-left: 5px solid #43a047;
   border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s;
 }
 
-.card .btn:hover {
-  background: #0d47a1;
-}
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+
+  .logo-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
   }
-}
 
-.card {
-  animation: fadeInUp 0.6s ease forwards;
-  opacity: 0; /* se mostrará al cargarse */
-}
+  .logo-img {
+    height: 30px;
+  }
 
-.card .fecha {
-  font-size: 0.9em;
-  color: #555;
-  margin: 8px 0;
-  font-style: italic;
-  transition: opacity 0.3s ease;
-}
-.logo-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  padding: 20px;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-.logo-img {
-  height: 40px;
-  width: auto;
-  margin-right: 10px;
-}
-
-.logo-esquina {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* opcional */
-}
   .titulo-biblioteca {
-  font-size: 24px;
-  color: #333; /* o el color que prefieras */
-  margin: 0;
+    font-size: 1.4rem;
+  }
 }
