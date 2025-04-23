@@ -291,7 +291,7 @@ header {
   width: auto;
 }
 .logo-esquina {
-  position: fixed;
+  position:
   top: 10px;
   left: 10px;
   width: 80px; /* ajustá el tamaño como prefieras */
