@@ -8,16 +8,16 @@
 </head>
 <body>
 
-  <!-- Encabezado principal con logo y título -->
+  <!-- Encabezado principal -->
   <header class="logo-header">
     <img src="img/logo.png" alt="Logo ISP24" class="logo-img">
     <h1>Biblioteca Virtual ISP24 <span class="subtitulo">"Héroes de Malvinas"</span></h1>
   </header>
 
-  <!-- Nueva sección para el mensaje informativo -->
-  <div class="descripcion-header">
+  <!-- Descripción debajo del título -->
+  <section class="panel descripcion">
     <p>Seleccioná tu carrera, ciclo lectivo, año y materia para acceder a los archivos disponibles.</p>
-  </div>
+  </section>
 
   <!-- Pantalla de carga -->
   <div id="cargando">
@@ -27,7 +27,8 @@
 
   <!-- Contenedor principal -->
   <div class="container">
-    <div class="filters">
+    <div class="filters panel">
+      
       <!-- Buscador -->
       <div class="buscador">
         <label for="busqueda-nombre">Buscar por nombre de archivo:</label>
@@ -62,16 +63,19 @@
       </select>
     </div>
 
+    <!-- Resultados -->
     <div class="results">
       <div id="resultados" class="cards"></div>
     </div>
 
-    <div id="ultimos">
+    <!-- Últimos archivos -->
+    <div id="ultimos" class="panel">
       <h2>📚 Últimos Archivos Agregados</h2>
       <div id="ultimos-resultados" class="cards"></div>
     </div>
   </div>
 
+  <!-- Pie de página -->
   <footer class="footer">
     <div class="donar">
       <p>Gracias por usar nuestra biblioteca digital. Si querés colaborar con más material, contactanos.</p>
