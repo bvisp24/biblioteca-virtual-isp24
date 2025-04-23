@@ -293,7 +293,9 @@ header {
 }
 
 .logo-esquina {
-  position: relative;
+  padding: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* fondo opcional */
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
