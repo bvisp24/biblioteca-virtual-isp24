@@ -287,3 +287,13 @@ display: flex;
  
 
 }
+
+.panel {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  backdrop-filter: blur(4px);
+}
