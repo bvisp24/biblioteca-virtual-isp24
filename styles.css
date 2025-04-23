@@ -287,10 +287,9 @@ header {
 }
 
 .logo-img {
-  height: 40px;   /* antes estaba en 60px, lo bajamos */
+  height: 40px;
   width: auto;
   margin-right: 10px;
-  max-height: 100%; /* asegura que no desborde el header */
 }
 
 .logo-esquina {
