@@ -277,10 +277,13 @@ body {
   }
 }
 .descripcion-header {
-  text-align: center;
-  padding: 10px 20px;
-  font-size: 1.1rem;
-  background-color: rgba(255, 255, 255, 0.7); /* fondo translúcido */
-  margin-bottom: 20px;
-  border-radius: 10px;
+display: flex;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 40px auto;
+  gap: 20px;
+  padding: 0 20px;
+
+ 
+
 }
